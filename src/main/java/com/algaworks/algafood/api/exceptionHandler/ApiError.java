@@ -6,6 +6,7 @@ import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Locale;
 
@@ -18,7 +19,7 @@ public class ApiError {
     private String type;
     private String title;
     private String detail;
-    private LocalDateTime timestamp;
+    private OffsetDateTime timestamp;
     private List<Object> objects;
 
     @Getter
@@ -38,7 +39,7 @@ public class ApiError {
         return ApiError.builder()
                 .detail(message)
                 .title(error.getTitle())
-                .timestamp(LocalDateTime.now())
+                .timestamp(OffsetDateTime.now())
                 .type(BASE_URI + error.getPath())
                 .status(error.getStatusCode())
                 .build();
@@ -48,7 +49,7 @@ public class ApiError {
         return ApiError.builder()
                 .detail(message)
                 .title(status.getReasonPhrase())
-                .timestamp(LocalDateTime.now())
+                .timestamp(OffsetDateTime.now())
                 .type(BASE_URI + "/" +
                         status.name().replace("_", "-").toLowerCase(Locale.ROOT))
                 .status(status.value())
