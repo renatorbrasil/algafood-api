@@ -1,5 +1,8 @@
 package com.algaworks.algafood.api.controller;
 
+import com.algaworks.algafood.api.dto.CozinhaInput;
+import com.algaworks.algafood.api.dto.CozinhaModel;
+import com.algaworks.algafood.api.mapper.CozinhaMapper;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
 import com.algaworks.algafood.domain.service.CadastroCozinhaService;
@@ -22,31 +25,41 @@ public class CozinhaController {
 	@Autowired
 	private CadastroCozinhaService cadastroCozinha;
 
+	@Autowired
+	private CozinhaMapper cozinhaMapper;
+
 	@GetMapping
-	public List<Cozinha> listar(String nome) {
+	public List<CozinhaModel> listar(String nome) {
+		List<Cozinha> cozinhas = null;
 		if (StringUtils.hasText(nome)) {
-			return cozinhaRepository.findAllByNomeContaining(nome);
+			cozinhas = cozinhaRepository.findAllByNomeContaining(nome);
+		} else {
+			cozinhas = cozinhaRepository.findAll();
 		}
-		return cozinhaRepository.findAll();
+		return cozinhaMapper.domainToDto(cozinhas);
 	}
 	
 	@GetMapping("/{cozinhaId}")
-	public Cozinha buscar(@PathVariable Long cozinhaId) {
-		return  cadastroCozinha.buscar(cozinhaId);
+	public CozinhaModel buscar(@PathVariable Long cozinhaId) {
+		return  cozinhaMapper.domainToDto(cadastroCozinha.buscar(cozinhaId));
 	}
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Cozinha adicionar(@RequestBody @Valid Cozinha cozinha) {
-		return cadastroCozinha.salvar(cozinha);
+	public CozinhaModel adicionar(@RequestBody @Valid CozinhaInput cozinhaInput) {
+		Cozinha cozinha = cozinhaMapper.dtoToDomain(cozinhaInput);
+		cozinha = cadastroCozinha.salvar(cozinha);
+		return cozinhaMapper.domainToDto(cozinha);
 	}
 	
 	@PutMapping("/{cozinhaId}")
-	public Cozinha atualizar(@PathVariable Long cozinhaId,
-			@RequestBody Cozinha cozinha) {
+	public CozinhaModel atualizar(@PathVariable Long cozinhaId,
+			@RequestBody CozinhaInput cozinhaInput) {
 		Cozinha cozinhaAtual = cadastroCozinha.buscar(cozinhaId);
-		BeanUtils.copyProperties(cozinha, cozinhaAtual, "id");
-		return cadastroCozinha.salvar(cozinhaAtual);
+		cozinhaMapper.copyDtoToDomain(cozinhaInput, cozinhaAtual);
+		cozinhaAtual = cadastroCozinha.salvar(cozinhaAtual);
+
+		return cozinhaMapper.domainToDto(cozinhaAtual);
 	}
 	
 	@DeleteMapping("/{cozinhaId}")

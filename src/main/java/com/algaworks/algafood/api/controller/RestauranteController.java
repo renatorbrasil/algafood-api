@@ -1,5 +1,8 @@
 package com.algaworks.algafood.api.controller;
 
+import com.algaworks.algafood.api.dto.RestauranteInput;
+import com.algaworks.algafood.api.dto.RestauranteModel;
+import com.algaworks.algafood.api.mapper.RestauranteMapper;
 import com.algaworks.algafood.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.exception.ValidacaoException;
@@ -11,7 +14,6 @@ import com.algaworks.algafood.infrastructure.repository.spec.SpecsBuilder;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
@@ -42,13 +44,16 @@ public class RestauranteController {
 	@Autowired
 	private SmartValidator validator;
 
+	@Autowired
+	private RestauranteMapper restauranteMapper;
+
 	@GetMapping
-	public List<Restaurante> listar() {
-		return restauranteRepository.findAll();
+	public List<RestauranteModel> listar() {
+		return restauranteMapper.domainToDto(restauranteRepository.findAll());
 	}
 
 	@GetMapping("/com-frete-gratis")
-	public List<Restaurante> restaurantesComFreteGratis(String nome) {
+	public List<RestauranteModel> restaurantesComFreteGratis(String nome) {
 
 		var specBuilder = new SpecsBuilder<Restaurante>();
 		var specArray = new ArrayList<Specification<Restaurante>>();
@@ -56,49 +61,43 @@ public class RestauranteController {
 		specArray.add(RestauranteSpecs.comFreteGratis());
 		specArray.add(RestauranteSpecs.comNomeSemelhante(nome));
 
-		return restauranteRepository.findAll(specBuilder.and(specArray));
+		return restauranteMapper.domainToDto(
+				restauranteRepository.findAll(specBuilder.and(specArray))
+		);
 	}
 	
 	@GetMapping("/{restauranteId}")
-	public Restaurante buscar(@PathVariable Long restauranteId) {
-		return cadastroRestaurante.buscar(restauranteId);
+	public RestauranteModel buscar(@PathVariable Long restauranteId) {
+		Restaurante restaurante = cadastroRestaurante.buscar(restauranteId);
+		return restauranteMapper.domainToDto(restaurante);
 	}
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Restaurante adicionar(
-			@RequestBody @Valid Restaurante restaurante) {
+	public RestauranteModel adicionar(
+			@RequestBody @Valid RestauranteInput restauranteInput) {
 		try {
-			return cadastroRestaurante.salvar(restaurante);
+			Restaurante restaurante = restauranteMapper.dtoToDomain(restauranteInput);
+			return restauranteMapper.domainToDto(cadastroRestaurante.salvar(restaurante));
 		} catch (CozinhaNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage());
 		}
 	}
 
 	@PutMapping("/{restauranteId}")
-	public Restaurante atualizar (
+	public RestauranteModel atualizar (
 			@PathVariable Long restauranteId,
-			@RequestBody @Valid Restaurante restaurante) {
+			@RequestBody @Valid RestauranteInput restauranteInput) {
 		Restaurante restauranteAtual = cadastroRestaurante.buscar(restauranteId);
-		BeanUtils.copyProperties(restaurante, restauranteAtual,
-				"id", "formasPagamento", "endereco", "dataCadastro", "produtos");
+
+		restauranteMapper.copyDtoToDomain(restauranteInput, restauranteAtual);
+
 		try {
-			return cadastroRestaurante.salvar(restauranteAtual);
+			return restauranteMapper.domainToDto(cadastroRestaurante.salvar(restauranteAtual));
 		} catch (CozinhaNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage());
 		}
 
-	}
-
-	@PatchMapping("/{restauranteId}")
-	public Restaurante atualizarParcial(@PathVariable Long restauranteId,
-										@RequestBody Map<String, Object> campos,
-										HttpServletRequest request) {
-		Restaurante restauranteAtual = cadastroRestaurante.buscar(restauranteId);
-
-		merge(campos, restauranteAtual, request);
-		validate(restauranteAtual);
-		return atualizar(restauranteId, restauranteAtual);
 	}
 
 	private void merge(Map<String, Object> dadosOrigem, Restaurante restauranteDestino, HttpServletRequest request) {

@@ -1,6 +1,6 @@
-package com.algaworks.algafood.api.model.mixin;
+package com.algaworks.algafood.api.dto.mixin;
 
-import com.algaworks.algafood.domain.model.*;
+import com.algaworks.algafood.domain.model.Estado;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 public abstract class CidadeJacksonMixin {

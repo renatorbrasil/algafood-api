@@ -1,5 +1,8 @@
 package com.algaworks.algafood.api.controller;
 
+import com.algaworks.algafood.api.dto.CidadeInput;
+import com.algaworks.algafood.api.dto.CidadeModel;
+import com.algaworks.algafood.api.mapper.CidadeMapper;
 import com.algaworks.algafood.domain.exception.EstadoNaoEncontradoException;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.model.Cidade;
@@ -22,34 +25,38 @@ public class CidadeController {
 
 	@Autowired
 	private CadastroCidadeService cadastroCidade;
+
+	@Autowired
+	private CidadeMapper cidadeMapper;
 	
 	@GetMapping
-	public List<Cidade> listar() {
-		return cidadeRepository.findAll();
+	public List<CidadeModel> listar() {
+		return cidadeMapper.domainToDto(cidadeRepository.findAll());
 	}
 
 	@GetMapping("/{cidadeId}")
-	public Cidade buscar(@PathVariable Long cidadeId) {
-		return cadastroCidade.buscar(cidadeId);
+	public CidadeModel buscar(@PathVariable Long cidadeId) {
+		return cidadeMapper.domainToDto(cadastroCidade.buscar(cidadeId));
 	}
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Cidade adicionar(@RequestBody @Valid Cidade cidade) {
+	public CidadeModel adicionar(@RequestBody @Valid CidadeInput cidadeInput) {
 		try {
-			return cadastroCidade.salvar(cidade);
+			Cidade cidade = cidadeMapper.dtoToDomain(cidadeInput);
+			return cidadeMapper.domainToDto(cadastroCidade.salvar(cidade));
 		} catch (EstadoNaoEncontradoException e) {
 			throw new NegocioException(e.getMessage());
 		}
 	}
 
 	@PutMapping("/{cidadeId}")
-	public Cidade atualizar(@PathVariable Long cidadeId,
-							@RequestBody @Valid Cidade cidade) {
+	public CidadeModel atualizar(@PathVariable Long cidadeId,
+							@RequestBody @Valid CidadeInput cidadeInput) {
 		try {
 			Cidade cidadeAtual = cadastroCidade.buscar(cidadeId);
-			BeanUtils.copyProperties(cidade, cidadeAtual, "id");
-			return cadastroCidade.salvar(cidadeAtual);
+			cidadeMapper.copyDtoToDomain(cidadeInput, cidadeAtual);
+			return cidadeMapper.domainToDto(cadastroCidade.salvar(cidadeAtual));
 		} catch (EstadoNaoEncontradoException e) {
 			throw new NegocioException(e.getMessage());
 		}

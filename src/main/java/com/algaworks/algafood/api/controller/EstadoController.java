@@ -1,5 +1,8 @@
 package com.algaworks.algafood.api.controller;
 
+import com.algaworks.algafood.api.dto.EstadoInput;
+import com.algaworks.algafood.api.dto.EstadoModel;
+import com.algaworks.algafood.api.mapper.EstadoMapper;
 import com.algaworks.algafood.domain.model.Estado;
 import com.algaworks.algafood.domain.repository.EstadoRepository;
 import com.algaworks.algafood.domain.service.CadastroEstadoService;
@@ -20,29 +23,35 @@ public class EstadoController {
 
 	@Autowired
 	private CadastroEstadoService cadastroEstado;
+
+	@Autowired
+	private EstadoMapper estadoMapper;
 	
 	@GetMapping
-	public List<Estado> listar() {
-		return estadoRepository.findAll();
+	public List<EstadoModel> listar() {
+		return estadoMapper.domainToDto(estadoRepository.findAll());
 	}
 
 	@GetMapping("/{estadoId}")
-	public Estado buscar(@PathVariable Long estadoId) {
-		return cadastroEstado.buscar(estadoId);
+	public EstadoModel buscar(@PathVariable Long estadoId) {
+		return estadoMapper.domainToDto(cadastroEstado.buscar(estadoId));
 	}
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Estado adicionar(@RequestBody @Valid Estado estado) {
-		return cadastroEstado.salvar(estado);
+	public EstadoModel adicionar(@RequestBody @Valid EstadoInput estadoInput) {
+		Estado estado = estadoMapper.dtoToDomain(estadoInput);
+		return estadoMapper.domainToDto(cadastroEstado.salvar(estado));
 	}
 
 	@PutMapping("/{estadoId}")
-	public Estado atualizar(@PathVariable Long estadoId,
-							@RequestBody @Valid Estado estado) {
+	public EstadoModel atualizar(@PathVariable Long estadoId,
+							@RequestBody @Valid EstadoInput estadoInput) {
 		Estado estadoAtual = cadastroEstado.buscar(estadoId);
-		BeanUtils.copyProperties(estado, estadoAtual, "id");
-		return cadastroEstado.salvar(estadoAtual);
+		estadoMapper.copyDtoToDomain(estadoInput, estadoAtual);
+		estadoAtual = cadastroEstado.salvar(estadoAtual);
+
+		return estadoMapper.domainToDto(estadoAtual);
 	}
 
 	@DeleteMapping("/{estadoId}")
