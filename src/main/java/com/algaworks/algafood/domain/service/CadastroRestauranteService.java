@@ -7,6 +7,7 @@ import com.algaworks.algafood.domain.repository.CozinhaRepository;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CadastroRestauranteService {
@@ -32,5 +33,17 @@ public class CadastroRestauranteService {
     public Restaurante buscar(Long restauranteId) {
         return restauranteRepository.findById(restauranteId)
                 .orElseThrow(() -> new RestauranteNaoEncontradoException(restauranteId));
+    }
+
+    @Transactional
+    public void ativar(Long restauranteId) {
+        Restaurante restauranteAtual = buscar(restauranteId);
+        restauranteAtual.ativar();
+    }
+
+    @Transactional
+    public void desativar(Long restauranteId) {
+        Restaurante restauranteAtual = buscar(restauranteId);
+        restauranteAtual.desativar();
     }
 }

@@ -100,6 +100,18 @@ public class RestauranteController {
 
 	}
 
+	@PutMapping("/{restauranteId}/ativo")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void ativar(@PathVariable Long restauranteId) {
+		cadastroRestaurante.ativar(restauranteId);
+	}
+
+	@DeleteMapping("/{restauranteId}/ativo")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void desativar(@PathVariable Long restauranteId) {
+		cadastroRestaurante.desativar(restauranteId);
+	}
+
 	private void merge(Map<String, Object> dadosOrigem, Restaurante restauranteDestino, HttpServletRequest request) {
 		try {
 			ObjectMapper objectMapper = new ObjectMapper();
