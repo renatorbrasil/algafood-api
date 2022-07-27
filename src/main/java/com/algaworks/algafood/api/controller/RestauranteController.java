@@ -1,8 +1,9 @@
 package com.algaworks.algafood.api.controller;
 
-import com.algaworks.algafood.api.dto.RestauranteInput;
-import com.algaworks.algafood.api.dto.RestauranteModel;
+import com.algaworks.algafood.api.dto.input.RestauranteInput;
+import com.algaworks.algafood.api.dto.model.RestauranteModel;
 import com.algaworks.algafood.api.mapper.RestauranteMapper;
+import com.algaworks.algafood.domain.exception.CidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.exception.ValidacaoException;
@@ -79,7 +80,7 @@ public class RestauranteController {
 		try {
 			Restaurante restaurante = restauranteMapper.dtoToDomain(restauranteInput);
 			return restauranteMapper.domainToDto(cadastroRestaurante.salvar(restaurante));
-		} catch (CozinhaNaoEncontradaException e) {
+		} catch (CozinhaNaoEncontradaException | CidadeNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage());
 		}
 	}
@@ -94,7 +95,7 @@ public class RestauranteController {
 
 		try {
 			return restauranteMapper.domainToDto(cadastroRestaurante.salvar(restauranteAtual));
-		} catch (CozinhaNaoEncontradaException e) {
+		} catch (CozinhaNaoEncontradaException | CidadeNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage());
 		}
 

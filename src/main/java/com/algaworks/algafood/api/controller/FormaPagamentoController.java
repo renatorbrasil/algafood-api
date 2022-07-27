@@ -1,7 +1,7 @@
 package com.algaworks.algafood.api.controller;
 
-import com.algaworks.algafood.api.dto.FormaPagamentoInput;
-import com.algaworks.algafood.api.dto.FormaPagamentoModel;
+import com.algaworks.algafood.api.dto.input.FormaPagamentoInput;
+import com.algaworks.algafood.api.dto.model.FormaPagamentoModel;
 import com.algaworks.algafood.api.mapper.FormaPagamentoMapper;
 import com.algaworks.algafood.domain.exception.EstadoNaoEncontradoException;
 import com.algaworks.algafood.domain.exception.NegocioException;

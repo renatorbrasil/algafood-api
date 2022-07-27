@@ -1,4 +1,4 @@
-package com.algaworks.algafood.api.dto;
+package com.algaworks.algafood.api.dto.input;
 
 import lombok.Getter;
 import lombok.Setter;

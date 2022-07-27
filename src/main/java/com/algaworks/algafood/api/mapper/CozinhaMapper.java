@@ -1,9 +1,7 @@
 package com.algaworks.algafood.api.mapper;
 
-import com.algaworks.algafood.api.dto.CidadeInput;
-import com.algaworks.algafood.api.dto.CozinhaInput;
-import com.algaworks.algafood.api.dto.CozinhaModel;
-import com.algaworks.algafood.domain.model.Cidade;
+import com.algaworks.algafood.api.dto.input.CozinhaInput;
+import com.algaworks.algafood.api.dto.model.CozinhaModel;
 import com.algaworks.algafood.domain.model.Cozinha;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

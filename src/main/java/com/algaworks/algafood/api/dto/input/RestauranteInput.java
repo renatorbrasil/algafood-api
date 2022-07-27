@@ -1,4 +1,4 @@
-package com.algaworks.algafood.api.dto;
+package com.algaworks.algafood.api.dto.input;
 
 import com.algaworks.algafood.core.validation.ValorZeroIncluiDescricao;
 import lombok.Getter;
@@ -29,4 +29,8 @@ public class RestauranteInput {
     @Valid
     @NotNull
     private CozinhaIdInput cozinha;
+
+    @Valid
+    @NotNull
+    private EnderecoInput endereco;
 }

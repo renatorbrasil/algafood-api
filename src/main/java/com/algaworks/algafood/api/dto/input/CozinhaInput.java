@@ -1,4 +1,4 @@
-package com.algaworks.algafood.api.dto;
+package com.algaworks.algafood.api.dto.input;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,8 +7,8 @@ import javax.validation.constraints.NotBlank;
 
 @Setter
 @Getter
-public class FormaPagamentoInput {
+public class CozinhaInput {
 
     @NotBlank
-    private String descricao;
+    private String nome;
 }

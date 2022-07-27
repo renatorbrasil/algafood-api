@@ -1,9 +1,7 @@
-package com.algaworks.algafood.api.dto;
+package com.algaworks.algafood.api.dto.model;
 
 import lombok.Getter;
 import lombok.Setter;
-
-import javax.validation.constraints.NotNull;
 
 @Setter
 @Getter
