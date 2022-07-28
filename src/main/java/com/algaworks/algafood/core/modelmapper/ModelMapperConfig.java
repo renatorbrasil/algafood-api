@@ -4,6 +4,7 @@ import com.algaworks.algafood.api.dto.model.EnderecoModel;
 import com.algaworks.algafood.api.dto.model.RestauranteModel;
 import com.algaworks.algafood.domain.model.Endereco;
 import com.algaworks.algafood.domain.model.Restaurante;
+import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +15,8 @@ public class ModelMapperConfig {
     @Bean
     public ModelMapper modelMapper() {
         var modelMapper = new ModelMapper();
+
+        modelMapper.getConfiguration().setPropertyCondition(Conditions.isNotNull());
 
         modelMapper.createTypeMap(Endereco.class, EnderecoModel.class)
                 .<String>addMapping(src -> src.getCidade().getEstado().getNome(),

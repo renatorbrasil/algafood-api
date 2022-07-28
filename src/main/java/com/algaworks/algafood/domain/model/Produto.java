@@ -25,7 +25,7 @@ public class Produto {
 	private Long preco;
 
 	@Column
-	private Boolean ativo;
+	private Boolean ativo = Boolean.FALSE;
 
 	@ManyToOne
 	@JoinColumn(nullable = false)
