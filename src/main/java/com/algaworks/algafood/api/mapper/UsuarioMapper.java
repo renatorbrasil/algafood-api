@@ -16,18 +16,18 @@ public class UsuarioMapper {
     @Autowired
     private ModelMapper modelMapper;
 
-    public UsuarioModel domainToDto(Usuario usuario) {
+    public UsuarioModel map(Usuario usuario) {
         return modelMapper.map(usuario, UsuarioModel.class);
     }
 
-    public List<UsuarioModel> domainToDto(List<Usuario> usuarios) {
+    public List<UsuarioModel> map(List<Usuario> usuarios) {
         return usuarios
                 .stream()
-                .map(this::domainToDto)
+                .map(this::map)
                 .collect(Collectors.toList());
     }
 
-    public Usuario dtoToDomain(UsuarioInput usuarioInput) {
+    public Usuario map(UsuarioInput usuarioInput) {
         return modelMapper.map(usuarioInput, Usuario.class);
     }
 

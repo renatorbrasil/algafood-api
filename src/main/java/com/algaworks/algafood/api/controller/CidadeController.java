@@ -30,20 +30,20 @@ public class CidadeController {
 	
 	@GetMapping
 	public List<CidadeModel> listar() {
-		return cidadeMapper.domainToDto(cidadeRepository.findAll());
+		return cidadeMapper.map(cidadeRepository.findAll());
 	}
 
 	@GetMapping("/{cidadeId}")
 	public CidadeModel buscar(@PathVariable Long cidadeId) {
-		return cidadeMapper.domainToDto(cadastroCidade.buscar(cidadeId));
+		return cidadeMapper.map(cadastroCidade.buscar(cidadeId));
 	}
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public CidadeModel adicionar(@RequestBody @Valid CidadeInput cidadeInput) {
 		try {
-			Cidade cidade = cidadeMapper.dtoToDomain(cidadeInput);
-			return cidadeMapper.domainToDto(cadastroCidade.salvar(cidade));
+			Cidade cidade = cidadeMapper.map(cidadeInput);
+			return cidadeMapper.map(cadastroCidade.salvar(cidade));
 		} catch (EstadoNaoEncontradoException e) {
 			throw new NegocioException(e.getMessage());
 		}
@@ -55,7 +55,7 @@ public class CidadeController {
 		try {
 			Cidade cidadeAtual = cadastroCidade.buscar(cidadeId);
 			cidadeMapper.copyDtoToDomain(cidadeInput, cidadeAtual);
-			return cidadeMapper.domainToDto(cadastroCidade.salvar(cidadeAtual));
+			return cidadeMapper.map(cadastroCidade.salvar(cidadeAtual));
 		} catch (EstadoNaoEncontradoException e) {
 			throw new NegocioException(e.getMessage());
 		}

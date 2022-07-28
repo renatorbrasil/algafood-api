@@ -31,20 +31,20 @@ public class UsuarioController {
 	@GetMapping
 	public List<UsuarioModel> listar() {
 		List<Usuario> usuarios = usuarioRepository.findAll();
-		return usuarioMapper.domainToDto(usuarios);
+		return usuarioMapper.map(usuarios);
 	}
 	
 	@GetMapping("/{usuarioId}")
 	public UsuarioModel buscar(@PathVariable Long usuarioId) {
-		return  usuarioMapper.domainToDto(cadastroUsuario.buscar(usuarioId));
+		return  usuarioMapper.map(cadastroUsuario.buscar(usuarioId));
 	}
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public UsuarioModel adicionar(@RequestBody @Valid UsuarioComSenhaInput usuarioInput) {
-		Usuario usuario = usuarioMapper.dtoToDomain(usuarioInput);
+		Usuario usuario = usuarioMapper.map(usuarioInput);
 		usuario = cadastroUsuario.salvar(usuario);
-		return usuarioMapper.domainToDto(usuario);
+		return usuarioMapper.map(usuario);
 	}
 	
 	@PutMapping("/{usuarioId}")
@@ -54,7 +54,7 @@ public class UsuarioController {
 		usuarioMapper.copyDtoToDomain(usuarioInput, usuarioAtual);
 		usuarioAtual = cadastroUsuario.salvar(usuarioAtual);
 
-		return usuarioMapper.domainToDto(usuarioAtual);
+		return usuarioMapper.map(usuarioAtual);
 	}
 
 	@PutMapping("/{usuarioId}/senha")

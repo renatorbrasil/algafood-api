@@ -28,19 +28,19 @@ public class EstadoController {
 	
 	@GetMapping
 	public List<EstadoModel> listar() {
-		return estadoMapper.domainToDto(estadoRepository.findAll());
+		return estadoMapper.map(estadoRepository.findAll());
 	}
 
 	@GetMapping("/{estadoId}")
 	public EstadoModel buscar(@PathVariable Long estadoId) {
-		return estadoMapper.domainToDto(cadastroEstado.buscar(estadoId));
+		return estadoMapper.map(cadastroEstado.buscar(estadoId));
 	}
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public EstadoModel adicionar(@RequestBody @Valid EstadoInput estadoInput) {
-		Estado estado = estadoMapper.dtoToDomain(estadoInput);
-		return estadoMapper.domainToDto(cadastroEstado.salvar(estado));
+		Estado estado = estadoMapper.map(estadoInput);
+		return estadoMapper.map(cadastroEstado.salvar(estado));
 	}
 
 	@PutMapping("/{estadoId}")
@@ -50,7 +50,7 @@ public class EstadoController {
 		estadoMapper.copyDtoToDomain(estadoInput, estadoAtual);
 		estadoAtual = cadastroEstado.salvar(estadoAtual);
 
-		return estadoMapper.domainToDto(estadoAtual);
+		return estadoMapper.map(estadoAtual);
 	}
 
 	@DeleteMapping("/{estadoId}")

@@ -17,18 +17,18 @@ public class CidadeMapper {
     @Autowired
     private ModelMapper modelMapper;
 
-    public CidadeModel domainToDto(Cidade cidade) {
+    public CidadeModel map(Cidade cidade) {
         return modelMapper.map(cidade, CidadeModel.class);
     }
 
-    public List<CidadeModel> domainToDto(List<Cidade> cidades) {
+    public List<CidadeModel> map(List<Cidade> cidades) {
         return cidades
                 .stream()
-                .map(this::domainToDto)
+                .map(this::map)
                 .collect(Collectors.toList());
     }
 
-    public Cidade dtoToDomain(CidadeInput cidadeInput) {
+    public Cidade map(CidadeInput cidadeInput) {
         return modelMapper.map(cidadeInput, Cidade.class);
     }
 

@@ -18,18 +18,18 @@ public class RestauranteMapper {
     @Autowired
     private ModelMapper modelMapper;
 
-    public RestauranteModel domainToDto(Restaurante restaurante) {
+    public RestauranteModel map(Restaurante restaurante) {
         return modelMapper.map(restaurante, RestauranteModel.class);
     }
 
-    public List<RestauranteModel> domainToDto(List<Restaurante> restaurantes) {
+    public List<RestauranteModel> map(List<Restaurante> restaurantes) {
         return restaurantes
                 .stream()
-                .map(this::domainToDto)
+                .map(this::map)
                 .collect(Collectors.toList());
     }
 
-    public Restaurante dtoToDomain(RestauranteInput restauranteInputDto) {
+    public Restaurante map(RestauranteInput restauranteInputDto) {
         return modelMapper.map(restauranteInputDto, Restaurante.class);
     }
 

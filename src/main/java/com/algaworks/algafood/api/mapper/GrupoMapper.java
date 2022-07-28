@@ -16,18 +16,18 @@ public class GrupoMapper {
     @Autowired
     private ModelMapper modelMapper;
 
-    public GrupoModel domainToDto(Grupo grupo) {
+    public GrupoModel map(Grupo grupo) {
         return modelMapper.map(grupo, GrupoModel.class);
     }
 
-    public List<GrupoModel> domainToDto(List<Grupo> grupos) {
+    public List<GrupoModel> map(List<Grupo> grupos) {
         return grupos
                 .stream()
-                .map(this::domainToDto)
+                .map(this::map)
                 .collect(Collectors.toList());
     }
 
-    public Grupo dtoToDomain(GrupoInput grupoInput) {
+    public Grupo map(GrupoInput grupoInput) {
         return modelMapper.map(grupoInput, Grupo.class);
     }
 

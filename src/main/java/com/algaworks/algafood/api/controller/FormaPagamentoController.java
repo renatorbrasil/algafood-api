@@ -30,20 +30,20 @@ public class FormaPagamentoController {
 	
 	@GetMapping
 	public List<FormaPagamentoModel> listar() {
-		return formaPagamentoMapper.domainToDto(formaPagamentoRepository.findAll());
+		return formaPagamentoMapper.map(formaPagamentoRepository.findAll());
 	}
 
 	@GetMapping("/{formaPagamentoId}")
 	public FormaPagamentoModel buscar(@PathVariable Long formaPagamentoId) {
-		return formaPagamentoMapper.domainToDto(cadastroFormaPagamento.buscar(formaPagamentoId));
+		return formaPagamentoMapper.map(cadastroFormaPagamento.buscar(formaPagamentoId));
 	}
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public FormaPagamentoModel adicionar(@RequestBody @Valid FormaPagamentoInput formaPagamentoInput) {
 		try {
-			FormaPagamento formaPagamento = formaPagamentoMapper.dtoToDomain(formaPagamentoInput);
-			return formaPagamentoMapper.domainToDto(cadastroFormaPagamento.salvar(formaPagamento));
+			FormaPagamento formaPagamento = formaPagamentoMapper.map(formaPagamentoInput);
+			return formaPagamentoMapper.map(cadastroFormaPagamento.salvar(formaPagamento));
 		} catch (EstadoNaoEncontradoException e) {
 			throw new NegocioException(e.getMessage());
 		}
@@ -55,7 +55,7 @@ public class FormaPagamentoController {
 		try {
 			FormaPagamento formaPagamentoAtual = cadastroFormaPagamento.buscar(formaPagamentoId);
 			formaPagamentoMapper.copyDtoToDomain(formaPagamentoInput, formaPagamentoAtual);
-			return formaPagamentoMapper.domainToDto(cadastroFormaPagamento.salvar(formaPagamentoAtual));
+			return formaPagamentoMapper.map(cadastroFormaPagamento.salvar(formaPagamentoAtual));
 		} catch (EstadoNaoEncontradoException e) {
 			throw new NegocioException(e.getMessage());
 		}

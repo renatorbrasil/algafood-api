@@ -7,6 +7,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,18 +17,18 @@ public class FormaPagamentoMapper {
     @Autowired
     private ModelMapper modelMapper;
 
-    public FormaPagamentoModel domainToDto(FormaPagamento formaPagamento) {
+    public FormaPagamentoModel map(FormaPagamento formaPagamento) {
         return modelMapper.map(formaPagamento, FormaPagamentoModel.class);
     }
 
-    public List<FormaPagamentoModel> domainToDto(List<FormaPagamento> formasPagamento) {
+    public List<FormaPagamentoModel> map(Collection<FormaPagamento> formasPagamento) {
         return formasPagamento
                 .stream()
-                .map(this::domainToDto)
+                .map(this::map)
                 .collect(Collectors.toList());
     }
 
-    public FormaPagamento dtoToDomain(FormaPagamentoInput formaPagamentoInput) {
+    public FormaPagamento map(FormaPagamentoInput formaPagamentoInput) {
         return modelMapper.map(formaPagamentoInput, FormaPagamento.class);
     }
 

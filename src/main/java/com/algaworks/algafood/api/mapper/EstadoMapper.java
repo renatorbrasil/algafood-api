@@ -16,18 +16,18 @@ public class EstadoMapper {
     @Autowired
     private ModelMapper modelMapper;
 
-    public EstadoModel domainToDto(Estado estado) {
+    public EstadoModel map(Estado estado) {
         return modelMapper.map(estado, EstadoModel.class);
     }
 
-    public List<EstadoModel> domainToDto(List<Estado> estados) {
+    public List<EstadoModel> map(List<Estado> estados) {
         return estados
                 .stream()
-                .map(this::domainToDto)
+                .map(this::map)
                 .collect(Collectors.toList());
     }
 
-    public Estado dtoToDomain(EstadoInput estadoInput) {
+    public Estado map(EstadoInput estadoInput) {
         return modelMapper.map(estadoInput, Estado.class);
     }
 

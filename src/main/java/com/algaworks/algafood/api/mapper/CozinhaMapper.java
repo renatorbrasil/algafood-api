@@ -16,18 +16,18 @@ public class CozinhaMapper {
     @Autowired
     private ModelMapper modelMapper;
 
-    public CozinhaModel domainToDto(Cozinha cozinha) {
+    public CozinhaModel map(Cozinha cozinha) {
         return modelMapper.map(cozinha, CozinhaModel.class);
     }
 
-    public List<CozinhaModel> domainToDto(List<Cozinha> cozinhas) {
+    public List<CozinhaModel> map(List<Cozinha> cozinhas) {
         return cozinhas
                 .stream()
-                .map(this::domainToDto)
+                .map(this::map)
                 .collect(Collectors.toList());
     }
 
-    public Cozinha dtoToDomain(CozinhaInput cozinhaInput) {
+    public Cozinha map(CozinhaInput cozinhaInput) {
         return modelMapper.map(cozinhaInput, Cozinha.class);
     }
 

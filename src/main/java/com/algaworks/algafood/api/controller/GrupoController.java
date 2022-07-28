@@ -29,20 +29,20 @@ public class GrupoController {
 	@GetMapping
 	public List<GrupoModel> listar() {
 		List<Grupo> grupos = grupoRepository.findAll();
-		return grupoMapper.domainToDto(grupos);
+		return grupoMapper.map(grupos);
 	}
 	
 	@GetMapping("/{grupoId}")
 	public GrupoModel buscar(@PathVariable Long grupoId) {
-		return  grupoMapper.domainToDto(cadastroGrupoService.buscar(grupoId));
+		return  grupoMapper.map(cadastroGrupoService.buscar(grupoId));
 	}
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public GrupoModel adicionar(@RequestBody @Valid GrupoInput grupoInput) {
-		Grupo grupo = grupoMapper.dtoToDomain(grupoInput);
+		Grupo grupo = grupoMapper.map(grupoInput);
 		grupo = cadastroGrupoService.salvar(grupo);
-		return grupoMapper.domainToDto(grupo);
+		return grupoMapper.map(grupo);
 	}
 	
 	@PutMapping("/{grupoId}")
@@ -52,7 +52,7 @@ public class GrupoController {
 		grupoMapper.copyDtoToDomain(grupoInput, grupoAtual);
 		grupoAtual = cadastroGrupoService.salvar(grupoAtual);
 
-		return grupoMapper.domainToDto(grupoAtual);
+		return grupoMapper.map(grupoAtual);
 	}
 	
 	@DeleteMapping("/{grupoId}")

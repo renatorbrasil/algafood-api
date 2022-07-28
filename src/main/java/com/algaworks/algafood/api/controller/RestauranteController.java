@@ -50,7 +50,7 @@ public class RestauranteController {
 
 	@GetMapping
 	public List<RestauranteModel> listar() {
-		return restauranteMapper.domainToDto(restauranteRepository.findAll());
+		return restauranteMapper.map(restauranteRepository.findAll());
 	}
 
 	@GetMapping("/com-frete-gratis")
@@ -62,7 +62,7 @@ public class RestauranteController {
 		specArray.add(RestauranteSpecs.comFreteGratis());
 		specArray.add(RestauranteSpecs.comNomeSemelhante(nome));
 
-		return restauranteMapper.domainToDto(
+		return restauranteMapper.map(
 				restauranteRepository.findAll(specBuilder.and(specArray))
 		);
 	}
@@ -70,7 +70,7 @@ public class RestauranteController {
 	@GetMapping("/{restauranteId}")
 	public RestauranteModel buscar(@PathVariable Long restauranteId) {
 		Restaurante restaurante = cadastroRestaurante.buscar(restauranteId);
-		return restauranteMapper.domainToDto(restaurante);
+		return restauranteMapper.map(restaurante);
 	}
 
 	@PostMapping
@@ -78,8 +78,8 @@ public class RestauranteController {
 	public RestauranteModel adicionar(
 			@RequestBody @Valid RestauranteInput restauranteInput) {
 		try {
-			Restaurante restaurante = restauranteMapper.dtoToDomain(restauranteInput);
-			return restauranteMapper.domainToDto(cadastroRestaurante.salvar(restaurante));
+			Restaurante restaurante = restauranteMapper.map(restauranteInput);
+			return restauranteMapper.map(cadastroRestaurante.salvar(restaurante));
 		} catch (CozinhaNaoEncontradaException | CidadeNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage());
 		}
@@ -94,7 +94,7 @@ public class RestauranteController {
 		restauranteMapper.copyDtoToDomain(restauranteInput, restauranteAtual);
 
 		try {
-			return restauranteMapper.domainToDto(cadastroRestaurante.salvar(restauranteAtual));
+			return restauranteMapper.map(cadastroRestaurante.salvar(restauranteAtual));
 		} catch (CozinhaNaoEncontradaException | CidadeNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage());
 		}

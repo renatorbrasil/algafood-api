@@ -35,20 +35,20 @@ public class CozinhaController {
 		} else {
 			cozinhas = cozinhaRepository.findAll();
 		}
-		return cozinhaMapper.domainToDto(cozinhas);
+		return cozinhaMapper.map(cozinhas);
 	}
 	
 	@GetMapping("/{cozinhaId}")
 	public CozinhaModel buscar(@PathVariable Long cozinhaId) {
-		return  cozinhaMapper.domainToDto(cadastroCozinha.buscar(cozinhaId));
+		return  cozinhaMapper.map(cadastroCozinha.buscar(cozinhaId));
 	}
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public CozinhaModel adicionar(@RequestBody @Valid CozinhaInput cozinhaInput) {
-		Cozinha cozinha = cozinhaMapper.dtoToDomain(cozinhaInput);
+		Cozinha cozinha = cozinhaMapper.map(cozinhaInput);
 		cozinha = cadastroCozinha.salvar(cozinha);
-		return cozinhaMapper.domainToDto(cozinha);
+		return cozinhaMapper.map(cozinha);
 	}
 	
 	@PutMapping("/{cozinhaId}")
@@ -58,7 +58,7 @@ public class CozinhaController {
 		cozinhaMapper.copyDtoToDomain(cozinhaInput, cozinhaAtual);
 		cozinhaAtual = cadastroCozinha.salvar(cozinhaAtual);
 
-		return cozinhaMapper.domainToDto(cozinhaAtual);
+		return cozinhaMapper.map(cozinhaAtual);
 	}
 	
 	@DeleteMapping("/{cozinhaId}")
