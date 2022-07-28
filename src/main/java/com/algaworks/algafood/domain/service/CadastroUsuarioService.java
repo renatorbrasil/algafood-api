@@ -8,16 +8,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 public class CadastroUsuarioService {
-
-    private static final String MSG_GRUPO_EM_USO = "Grupo de código %d não pode ser removido porque está em uso";
 
     @Autowired
     private UsuarioRepository usuarioRepository;
 
     @Transactional
     public Usuario salvar(Usuario usuario) {
+        usuarioRepository.detach(usuario);
+        Optional<Usuario> usuarioExistente = usuarioRepository.findByEmail(usuario.getEmail());
+
+        if (usuarioExistente.isPresent() && !usuarioExistente.get().equals(usuario)) {
+            throw new NegocioException(String.format(
+                    "Já existe um usuário cadastrado com o e-mail %s.", usuario.getEmail()));
+        }
+
         return usuarioRepository.save(usuario);
     }
 

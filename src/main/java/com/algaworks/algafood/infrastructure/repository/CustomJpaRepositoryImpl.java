@@ -20,6 +20,11 @@ public class CustomJpaRepositoryImpl<T, ID>
     }
 
     @Override
+    public void detach(T entity) {
+        manager.detach(entity);
+    }
+
+    @Override
     public Optional<T> buscarPrimeiro() {
         var jpql = "from " + getDomainClass().getName();
 
