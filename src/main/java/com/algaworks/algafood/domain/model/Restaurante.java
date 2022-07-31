@@ -36,6 +36,8 @@ public class Restaurante {
 
 	private Boolean ativo = Boolean.TRUE;
 
+	private Boolean aberto = Boolean.TRUE;
+
 	@org.hibernate.annotations.CreationTimestamp
 	@Column(nullable = false, columnDefinition = "datetime")
 	private OffsetDateTime dataCadastro;
@@ -52,15 +54,20 @@ public class Restaurante {
 	)
 	private Set<FormaPagamento> formasPagamento = new HashSet<>();
 
-	@OneToMany(mappedBy = "restaurante")
-	private List<Produto> produtos = new ArrayList<>();
-
 	public void ativar() {
 		setAtivo(true);
 	}
 
 	public void desativar() {
 		setAtivo(false);
+	}
+
+	public void abrir() {
+		setAberto(true);
+	}
+
+	public void fechar() {
+		setAberto(false);
 	}
 
 	public boolean removerFormaPagamento(FormaPagamento formaPagamento) {
