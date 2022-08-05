@@ -1,14 +1,10 @@
 package com.algaworks.algafood.api.controller;
 
-import com.algaworks.algafood.api.dto.model.FormaPagamentoModel;
 import com.algaworks.algafood.api.dto.model.UsuarioModel;
-import com.algaworks.algafood.api.mapper.FormaPagamentoMapper;
 import com.algaworks.algafood.api.mapper.UsuarioMapper;
-import com.algaworks.algafood.domain.model.FormaPagamento;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.model.Usuario;
 import com.algaworks.algafood.domain.service.CadastroRestauranteService;
-import com.fasterxml.jackson.databind.ser.std.UUIDSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
