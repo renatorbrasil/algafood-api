@@ -1,5 +1,6 @@
 package com.algaworks.algafood.api.mapper;
 
+import com.algaworks.algafood.api.dto.input.PedidoInput;
 import com.algaworks.algafood.api.dto.model.PedidoModel;
 import com.algaworks.algafood.domain.model.Pedido;
 import org.modelmapper.ModelMapper;
@@ -24,5 +25,13 @@ public class PedidoMapper {
                 .stream()
                 .map(this::map)
                 .collect(Collectors.toList());
+    }
+
+    public Pedido map(PedidoInput pedidoInput) {
+        return modelMapper.map(pedidoInput, Pedido.class);
+    }
+
+    public void copyDomainToObject(PedidoInput pedidoInput, Pedido pedido) {
+        modelMapper.map(pedidoInput, pedido);
     }
 }

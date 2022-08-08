@@ -1,6 +1,5 @@
 package com.algaworks.algafood.api.mapper;
 
-import com.algaworks.algafood.api.dto.model.PedidoModel;
 import com.algaworks.algafood.api.dto.model.PedidoResumoModel;
 import com.algaworks.algafood.domain.model.Pedido;
 import org.modelmapper.ModelMapper;
