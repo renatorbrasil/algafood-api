@@ -1,7 +1,6 @@
 package com.algaworks.algafood.domain.service;
 
 import com.algaworks.algafood.domain.exception.NegocioException;
-import com.algaworks.algafood.domain.exception.PedidoNaoEncontradoException;
 import com.algaworks.algafood.domain.model.*;
 import com.algaworks.algafood.domain.repository.PedidoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,11 +26,6 @@ public class EmissaoPedidoService {
 
     @Autowired
     private CadastroCidadeService cadastroCidade;
-
-    public Pedido buscar(Long pedidoId) {
-        return pedidoRepository.findById(pedidoId)
-                .orElseThrow(() -> new PedidoNaoEncontradoException(pedidoId));
-    }
 
     @Transactional
     public Pedido emitir(Pedido pedido) {

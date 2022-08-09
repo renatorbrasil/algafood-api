@@ -10,6 +10,7 @@ import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.model.Pedido;
 import com.algaworks.algafood.domain.model.Usuario;
 import com.algaworks.algafood.domain.repository.PedidoRepository;
+import com.algaworks.algafood.domain.service.CadastroPedidoService;
 import com.algaworks.algafood.domain.service.EmissaoPedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,6 +30,9 @@ public class PedidoController {
 	private EmissaoPedidoService emissaoPedido;
 
 	@Autowired
+	private CadastroPedidoService cadastroPedido;
+
+	@Autowired
 	private PedidoMapper pedidoMapper;
 
 	@Autowired
@@ -40,9 +44,9 @@ public class PedidoController {
 		return pedidoResumoMapper.map(todosPedidos);
 	}
 
-	@GetMapping("/{pedidoId}")
-	public PedidoModel buscar(@PathVariable Long pedidoId) {
-		Pedido pedido = emissaoPedido.buscar(pedidoId);
+	@GetMapping("/{codigoPedido}")
+	public PedidoModel buscar(@PathVariable String codigoPedido) {
+		Pedido pedido = cadastroPedido.buscar(codigoPedido);
 		return pedidoMapper.map(pedido);
 	}
 
