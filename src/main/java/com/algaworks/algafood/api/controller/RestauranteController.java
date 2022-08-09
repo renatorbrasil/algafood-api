@@ -2,6 +2,7 @@ package com.algaworks.algafood.api.controller;
 
 import com.algaworks.algafood.api.dto.input.RestauranteInput;
 import com.algaworks.algafood.api.dto.model.RestauranteModel;
+import com.algaworks.algafood.api.dto.view.RestauranteView;
 import com.algaworks.algafood.api.mapper.RestauranteMapper;
 import com.algaworks.algafood.domain.exception.*;
 import com.algaworks.algafood.domain.model.Restaurante;
@@ -9,6 +10,7 @@ import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import com.algaworks.algafood.domain.service.CadastroRestauranteService;
 import com.algaworks.algafood.infrastructure.repository.spec.RestauranteSpecs;
 import com.algaworks.algafood.infrastructure.repository.spec.SpecsBuilder;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -45,9 +47,16 @@ public class RestauranteController {
 	@Autowired
 	private RestauranteMapper restauranteMapper;
 
+	@JsonView(RestauranteView.Resumo.class)
 	@GetMapping
 	public List<RestauranteModel> listar() {
 		return restauranteMapper.map(restauranteRepository.findAll());
+	}
+
+	@JsonView(RestauranteView.ApenasNome.class)
+	@GetMapping(params = "projecao=nomes")
+	public List<RestauranteModel> apenasNomes() {
+		return listar();
 	}
 
 	@GetMapping("/com-frete-gratis")
