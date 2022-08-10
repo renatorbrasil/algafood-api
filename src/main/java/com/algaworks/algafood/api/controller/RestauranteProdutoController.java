@@ -32,9 +32,14 @@ public class RestauranteProdutoController {
 	private ProdutoMapper produtoMapper;
 
 	@GetMapping
-	public List<ProdutoModel> listar(@PathVariable Long restauranteId) {
+	public List<ProdutoModel> listar(
+			@PathVariable Long restauranteId,
+			@RequestParam(required = false) boolean incluirInativos) {
 		Restaurante restaurante = cadastroRestaurante.buscar(restauranteId);
-		List<Produto> produtos = produtoRepository.findByRestaurante(restaurante);
+		List<Produto> produtos = incluirInativos
+				? produtoRepository.findByRestaurante(restaurante)
+				: produtoRepository.findAtivosByRestaurante(restaurante);
+
 		return produtoMapper.map(produtos);
 	}
 
