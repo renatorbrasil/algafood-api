@@ -7,6 +7,7 @@ import org.springframework.util.FileCopyUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -15,6 +16,16 @@ public class LocalFotoStorageService implements FotoStorageService {
 
     @Value("${algafood.storage.local.diretorio-fotos}")
     private Path diretorioFotos;
+
+    @Override
+    public InputStream recuperar(String nomeArquivo) {
+        Path arquivoPath = getArquivoPath(nomeArquivo);
+        try {
+            return Files.newInputStream(arquivoPath);
+        } catch (IOException e) {
+            throw new StorageException("Não foi possível recuperar o arquivo.");
+        }
+    }
 
     @Override
     public void armazenar(NovaFoto novaFoto) {
