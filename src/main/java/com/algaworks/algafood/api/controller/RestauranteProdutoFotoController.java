@@ -56,6 +56,12 @@ public class RestauranteProdutoFotoController {
         return fotoProdutoMapper.map(fotoSalva);
     }
 
+    @DeleteMapping
+    public void apagarFoto(@PathVariable Long restauranteId,
+                           @PathVariable Long produtoId) {
+        catalogoFotoProduto.excluir(restauranteId, produtoId);
+    }
+
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public FotoProdutoModel buscar(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
         FotoProduto fotoProduto = catalogoFotoProduto.buscar(restauranteId, produtoId);
