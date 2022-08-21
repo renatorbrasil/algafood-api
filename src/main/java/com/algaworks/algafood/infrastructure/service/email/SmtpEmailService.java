@@ -1,14 +1,14 @@
 package com.algaworks.algafood.infrastructure.service.email;
 
 import com.algaworks.algafood.core.email.EmailProperties;
-import com.algaworks.algafood.domain.service.EnvioEmailService;
+import com.algaworks.algafood.domain.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
 import javax.mail.internet.MimeMessage;
 
-public class SmtpEnvioEmailService  implements EnvioEmailService {
+public class SmtpEmailService implements EmailService {
 
     @Autowired
     private JavaMailSender mailSender;

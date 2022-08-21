@@ -7,7 +7,7 @@ import lombok.Singular;
 
 import java.util.Set;
 
-public interface EnvioEmailService {
+public interface EmailService {
 
     void enviar(Mensagem mensagem);
 

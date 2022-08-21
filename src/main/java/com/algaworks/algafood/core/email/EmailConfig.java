@@ -1,8 +1,8 @@
 package com.algaworks.algafood.core.email;
 
-import com.algaworks.algafood.domain.service.EnvioEmailService;
-import com.algaworks.algafood.infrastructure.service.email.FakeEnvioEmailService;
-import com.algaworks.algafood.infrastructure.service.email.SmtpEnvioEmailService;
+import com.algaworks.algafood.domain.service.EmailService;
+import com.algaworks.algafood.infrastructure.service.email.FakeEmailService;
+import com.algaworks.algafood.infrastructure.service.email.SmtpEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,12 +13,12 @@ public class EmailConfig {
     @Autowired EmailProperties emailProperties;
 
     @Bean
-    public EnvioEmailService envioEmailService() {
+    public EmailService envioEmailService() {
         switch (emailProperties.getImpl()) {
             case FAKE:
-                return new FakeEnvioEmailService();
+                return new FakeEmailService();
             case SMTP:
-                return new SmtpEnvioEmailService();
+                return new SmtpEmailService();
             default:
                 return null;
         }
