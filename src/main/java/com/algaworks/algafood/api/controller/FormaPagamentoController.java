@@ -36,7 +36,7 @@ public class FormaPagamentoController {
 		List<FormaPagamento> formasPagamento = formaPagamentoRepository.findAll();
 		List<FormaPagamentoModel> formasPagamentoModel = formaPagamentoMapper.map(formasPagamento);
 		return ResponseEntity.ok()
-				.cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS))
+				.cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePublic())
 				.body(formasPagamentoModel);
 
 	}
