@@ -1,6 +1,6 @@
 package com.algaworks.algafood.api.dto.input;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,11 +12,11 @@ import javax.validation.constraints.NotNull;
 @Getter
 public class CidadeInput {
 
-    @ApiModelProperty(example = "Uberlândia", required = true)
+    @Schema(example = "Uberlândia", required = true)
     @NotBlank
     private String nome;
 
-    @ApiModelProperty(required = true)
+    @Schema(required = true)
     @Valid
     @NotNull
     private EstadoIdInput estado;

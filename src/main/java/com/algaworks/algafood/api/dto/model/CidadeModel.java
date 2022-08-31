@@ -1,6 +1,6 @@
 package com.algaworks.algafood.api.dto.model;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,10 +9,10 @@ import lombok.Setter;
 @Getter
 public class CidadeModel {
 
-    @ApiModelProperty(example = "1")
+    @Schema(example = "1")
     private Long id;
 
-    @ApiModelProperty(example = "Belo Horizonte")
+    @Schema(example = "Belo Horizonte")
     private String nome;
 
     private EstadoModel estado;
