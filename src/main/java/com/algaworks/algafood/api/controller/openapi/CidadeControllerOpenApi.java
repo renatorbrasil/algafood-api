@@ -13,7 +13,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.List;
 
-@Tag(name = "Cidades")
+@Tag(name = "Cidades", description = "Gerencia cidades")
 public interface CidadeControllerOpenApi {
 
     @Operation(summary = "Listar todas as cidades")
