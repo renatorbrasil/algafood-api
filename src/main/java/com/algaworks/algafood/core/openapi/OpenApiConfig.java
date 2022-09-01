@@ -5,6 +5,7 @@ import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
@@ -25,22 +26,19 @@ public class OpenApiConfig {
         return openApi -> {
             openApi.getPaths().values().forEach(pathItem -> pathItem.readOperations().forEach(operation -> {
                 ApiResponses apiResponses = operation.getResponses();
-
-                apiResponses.addApiResponse(
-                        String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()),
-                        new ApiResponse().description("Erro interno do servidor"));
-                apiResponses.addApiResponse(
-                        String.valueOf(HttpStatus.NOT_ACCEPTABLE.value()),
-                        new ApiResponse().description("Recurso não possui representação que pôde ser aceita pelo consumidor"));
-                apiResponses.addApiResponse(
-                        String.valueOf(HttpStatus.BAD_REQUEST.value()),
-                        new ApiResponse().description("Requisição inválida (erro do cliente)"));
-                apiResponses.addApiResponse(
-                        String.valueOf(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value()),
-                        new ApiResponse().description("Requisição recusada porque o corpo está em um formato não suportado"));
-
+                insertResponseIfNotPresent(apiResponses, HttpStatus.INTERNAL_SERVER_ERROR, "Erro interno do servidor");
+                insertResponseIfNotPresent(apiResponses, HttpStatus.NOT_ACCEPTABLE, "Recurso não possui representação que pôde ser aceita pelo consumidor");
+                insertResponseIfNotPresent(apiResponses, HttpStatus.BAD_REQUEST, "Requisição inválida (erro do cliente)");
+                insertResponseIfNotPresent(apiResponses, HttpStatus.UNSUPPORTED_MEDIA_TYPE, "Requisição recusada porque o corpo está em um formato não suportado");
             }));
         };
+    }
+
+    private void insertResponseIfNotPresent(ApiResponses apiResponses, HttpStatus status, String description) {
+        String statusString = String.valueOf(status.value());
+        if (apiResponses.get(statusString) == null) {
+            apiResponses.addApiResponse(statusString, new ApiResponse().description(description));
+        }
     }
 
     @Bean

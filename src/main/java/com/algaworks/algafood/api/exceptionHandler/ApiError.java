@@ -31,7 +31,7 @@ public class ApiError {
     @Schema(example = "2022-08-31T22:27:06.10612Z")
     private OffsetDateTime timestamp;
 
-    @Schema(name = "Lista de objetos ou campos que geraram o erro (opcional)")
+    @Schema(description = "Lista de objetos ou campos que geraram o erro (opcional)")
     private List<Object> objects;
 
     @Schema(name = "ObjetoProblema")
