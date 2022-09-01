@@ -1,6 +1,6 @@
 package com.algaworks.algafood.api.controller;
 
-import com.algaworks.algafood.api.controller.openapi.GrupoControllerOpenApi;
+import com.algaworks.algafood.api.openapi.controller.GrupoControllerOpenApi;
 import com.algaworks.algafood.api.dto.input.GrupoInput;
 import com.algaworks.algafood.api.dto.model.GrupoModel;
 import com.algaworks.algafood.api.mapper.GrupoMapper;
@@ -9,13 +9,14 @@ import com.algaworks.algafood.domain.repository.GrupoRepository;
 import com.algaworks.algafood.domain.service.CadastroGrupoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/grupos")
+@RequestMapping(value = "/grupos", produces = MediaType.APPLICATION_JSON_VALUE)
 public class GrupoController implements GrupoControllerOpenApi {
 
 	@Autowired
