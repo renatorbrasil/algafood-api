@@ -3,6 +3,7 @@ package com.algaworks.algafood.api.controller;
 import com.algaworks.algafood.api.dto.input.FotoProdutoInput;
 import com.algaworks.algafood.api.dto.model.FotoProdutoModel;
 import com.algaworks.algafood.api.mapper.FotoProdutoMapper;
+import com.algaworks.algafood.api.openapi.controller.RestauranteProdutoFotoControllerOpenApi;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.model.FotoProduto;
 import com.algaworks.algafood.domain.model.Produto;
@@ -24,8 +25,10 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/restaurantes/{restauranteId}/produtos/{produtoId}/foto")
-public class RestauranteProdutoFotoController {
+@RequestMapping(
+        value = "/restaurantes/{restauranteId}/produtos/{produtoId}/foto",
+        produces = MediaType.APPLICATION_JSON_VALUE)
+public class RestauranteProdutoFotoController implements RestauranteProdutoFotoControllerOpenApi {
 
     @Autowired
     private CatalogoFotoProdutoService catalogoFotoProduto;
@@ -63,13 +66,13 @@ public class RestauranteProdutoFotoController {
         catalogoFotoProduto.excluir(restauranteId, produtoId);
     }
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping
     public FotoProdutoModel buscar(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
         FotoProduto fotoProduto = catalogoFotoProduto.buscar(restauranteId, produtoId);
         return fotoProdutoMapper.map(fotoProduto);
     }
 
-    @GetMapping
+    @GetMapping(produces = MediaType.ALL_VALUE)
     public ResponseEntity<?> servirFoto(
             @PathVariable Long restauranteId,
             @PathVariable Long produtoId,

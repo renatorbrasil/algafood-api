@@ -2,6 +2,7 @@ package com.algaworks.algafood.api.controller;
 
 import com.algaworks.algafood.api.dto.model.UsuarioModel;
 import com.algaworks.algafood.api.mapper.UsuarioMapper;
+import com.algaworks.algafood.api.openapi.controller.RestauranteResponsavelControllerOpenApi;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.model.Usuario;
 import com.algaworks.algafood.domain.service.CadastroRestauranteService;
@@ -14,7 +15,7 @@ import java.util.Set;
 
 @RestController
 @RequestMapping(value = "/restaurantes/{restauranteId}/responsaveis")
-public class RestauranteResponsavelController {
+public class RestauranteResponsavelController implements RestauranteResponsavelControllerOpenApi {
 
 	@Autowired
 	private CadastroRestauranteService cadastroRestaurante;
