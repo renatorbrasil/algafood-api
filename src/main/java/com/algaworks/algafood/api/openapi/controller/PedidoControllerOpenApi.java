@@ -1,0 +1,21 @@
+package com.algaworks.algafood.api.openapi.controller;
+
+import com.algaworks.algafood.api.dto.input.PedidoInput;
+import com.algaworks.algafood.api.dto.model.PedidoModel;
+import com.algaworks.algafood.api.dto.model.PedidoResumoModel;
+import com.algaworks.algafood.domain.filter.PedidoFilter;
+import io.swagger.v3.oas.annotations.Parameter;
+import org.springdoc.core.converters.models.PageableAsQueryParam;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+public interface PedidoControllerOpenApi {
+
+    @PageableAsQueryParam
+    Page<PedidoResumoModel> pesquisar(PedidoFilter filtro, @Parameter(hidden = true) Pageable pageable);
+
+    PedidoModel buscar(String codigoPedido);
+
+    PedidoModel adicionar(PedidoInput pedidoInput);
+
+}

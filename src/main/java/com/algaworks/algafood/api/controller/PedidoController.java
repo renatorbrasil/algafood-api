@@ -5,6 +5,7 @@ import com.algaworks.algafood.api.dto.model.PedidoModel;
 import com.algaworks.algafood.api.dto.model.PedidoResumoModel;
 import com.algaworks.algafood.api.mapper.PedidoMapper;
 import com.algaworks.algafood.api.mapper.PedidoResumoMapper;
+import com.algaworks.algafood.api.openapi.controller.PedidoControllerOpenApi;
 import com.algaworks.algafood.core.data.PageableTranslator;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
@@ -15,6 +16,8 @@ import com.algaworks.algafood.domain.repository.PedidoRepository;
 import com.algaworks.algafood.domain.service.CadastroPedidoService;
 import com.algaworks.algafood.domain.service.EmissaoPedidoService;
 import com.algaworks.algafood.infrastructure.repository.spec.PedidoSpecs;
+import io.swagger.v3.oas.annotations.Parameter;
+import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -28,7 +31,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/pedidos")
-public class PedidoController {
+public class PedidoController implements PedidoControllerOpenApi {
 
 	@Autowired
 	private PedidoRepository pedidoRepository;

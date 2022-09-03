@@ -3,7 +3,10 @@ package com.algaworks.algafood.api.controller;
 import com.algaworks.algafood.api.dto.input.RestauranteInput;
 import com.algaworks.algafood.api.dto.model.RestauranteModel;
 import com.algaworks.algafood.api.dto.view.RestauranteView;
+import com.algaworks.algafood.api.exceptionHandler.ApiError;
 import com.algaworks.algafood.api.mapper.RestauranteMapper;
+import com.algaworks.algafood.api.openapi.controller.RestauranteControllerOpenApi;
+import com.algaworks.algafood.api.openapi.model.RestauranteBasicoOpenApiModel;
 import com.algaworks.algafood.domain.exception.*;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
@@ -13,6 +16,13 @@ import com.algaworks.algafood.infrastructure.repository.spec.SpecsBuilder;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
@@ -33,7 +43,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/restaurantes")
-public class RestauranteController {
+public class RestauranteController implements RestauranteControllerOpenApi {
 
 	@Autowired
 	private RestauranteRepository restauranteRepository;
