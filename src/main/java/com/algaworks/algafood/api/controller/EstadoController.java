@@ -7,11 +7,11 @@ import com.algaworks.algafood.domain.model.Estado;
 import com.algaworks.algafood.domain.repository.EstadoRepository;
 import com.algaworks.algafood.domain.service.CadastroEstadoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping("/estados")
@@ -27,20 +27,20 @@ public class EstadoController {
 	private EstadoMapper estadoMapper;
 	
 	@GetMapping
-	public List<EstadoModel> listar() {
-		return estadoMapper.map(estadoRepository.findAll());
+	public CollectionModel<EstadoModel> listar() {
+		return estadoMapper.toCollectionModel(estadoRepository.findAll());
 	}
 
 	@GetMapping("/{estadoId}")
 	public EstadoModel buscar(@PathVariable Long estadoId) {
-		return estadoMapper.map(cadastroEstado.buscar(estadoId));
+		return estadoMapper.toModel(cadastroEstado.buscar(estadoId));
 	}
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public EstadoModel adicionar(@RequestBody @Valid EstadoInput estadoInput) {
-		Estado estado = estadoMapper.map(estadoInput);
-		return estadoMapper.map(cadastroEstado.salvar(estado));
+		Estado estado = estadoMapper.toDomain(estadoInput);
+		return estadoMapper.toModel(cadastroEstado.salvar(estado));
 	}
 
 	@PutMapping("/{estadoId}")
@@ -50,7 +50,7 @@ public class EstadoController {
 		estadoMapper.copyDtoToDomain(estadoInput, estadoAtual);
 		estadoAtual = cadastroEstado.salvar(estadoAtual);
 
-		return estadoMapper.map(estadoAtual);
+		return estadoMapper.toModel(estadoAtual);
 	}
 
 	@DeleteMapping("/{estadoId}")
