@@ -9,6 +9,7 @@ import com.algaworks.algafood.domain.model.Usuario;
 import com.algaworks.algafood.domain.repository.UsuarioRepository;
 import com.algaworks.algafood.domain.service.CadastroUsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,22 +30,22 @@ public class UsuarioController {
 	private UsuarioMapper usuarioMapper;
 
 	@GetMapping
-	public List<UsuarioModel> listar() {
+	public CollectionModel<UsuarioModel> listar() {
 		List<Usuario> usuarios = usuarioRepository.findAll();
-		return usuarioMapper.map(usuarios);
+		return usuarioMapper.toCollectionModel(usuarios);
 	}
 	
 	@GetMapping("/{usuarioId}")
 	public UsuarioModel buscar(@PathVariable Long usuarioId) {
-		return  usuarioMapper.map(cadastroUsuario.buscar(usuarioId));
+		return  usuarioMapper.toModel(cadastroUsuario.buscar(usuarioId));
 	}
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public UsuarioModel adicionar(@RequestBody @Valid UsuarioComSenhaInput usuarioInput) {
-		Usuario usuario = usuarioMapper.map(usuarioInput);
+		Usuario usuario = usuarioMapper.toDomain(usuarioInput);
 		usuario = cadastroUsuario.salvar(usuario);
-		return usuarioMapper.map(usuario);
+		return usuarioMapper.toModel(usuario);
 	}
 	
 	@PutMapping("/{usuarioId}")
@@ -54,7 +55,7 @@ public class UsuarioController {
 		usuarioMapper.copyDtoToDomain(usuarioInput, usuarioAtual);
 		usuarioAtual = cadastroUsuario.salvar(usuarioAtual);
 
-		return usuarioMapper.map(usuarioAtual);
+		return usuarioMapper.toModel(usuarioAtual);
 	}
 
 	@PutMapping("/{usuarioId}/senha")

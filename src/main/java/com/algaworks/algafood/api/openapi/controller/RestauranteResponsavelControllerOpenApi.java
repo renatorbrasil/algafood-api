@@ -2,13 +2,12 @@ package com.algaworks.algafood.api.openapi.controller;
 
 import com.algaworks.algafood.api.dto.model.UsuarioModel;
 import io.swagger.v3.oas.annotations.tags.Tag;
-
-import java.util.List;
+import org.springframework.hateoas.CollectionModel;
 
 @Tag(name = "Restaurante")
 public interface RestauranteResponsavelControllerOpenApi {
 
-    List<UsuarioModel> listar(Long restauranteId);
+    CollectionModel<UsuarioModel> listar(Long restauranteId);
 
     void desassociar(Long restauranteId, Long usuarioId);
 

@@ -7,10 +7,10 @@ import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.model.Usuario;
 import com.algaworks.algafood.domain.service.CadastroRestauranteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -24,10 +24,10 @@ public class RestauranteResponsavelController implements RestauranteResponsavelC
 	private UsuarioMapper usuarioMapper;
 
 	@GetMapping
-	public List<UsuarioModel> listar(@PathVariable Long restauranteId) {
+	public CollectionModel<UsuarioModel> listar(@PathVariable Long restauranteId) {
 		Restaurante restaurante = cadastroRestaurante.buscar(restauranteId);
 		Set<Usuario> responsaveis = restaurante.getResponsaveis();
-		return usuarioMapper.map(responsaveis);
+		return usuarioMapper.toCollectionModel(responsaveis);
 	}
 
 	@DeleteMapping("/{usuarioId}")
