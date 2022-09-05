@@ -11,12 +11,12 @@ import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.repository.CidadeRepository;
 import com.algaworks.algafood.domain.service.CadastroCidadeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping(path = "/cidades", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -32,22 +32,22 @@ public class CidadeController implements CidadeControllerOpenApi {
 	private CidadeMapper cidadeMapper;
 
 	@GetMapping
-	public List<CidadeModel> listar() {
-		return cidadeMapper.map(cidadeRepository.findAll());
+	public CollectionModel<CidadeModel> listar() {
+		return cidadeMapper.toCollectionModel(cidadeRepository.findAll());
 	}
 
 	@GetMapping("/{cidadeId}")
 	public CidadeModel buscar(@PathVariable Long cidadeId) {
-		return cidadeMapper.map(cadastroCidade.buscar(cidadeId));
+		return cidadeMapper.toModel(cadastroCidade.buscar(cidadeId));
 	}
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public CidadeModel adicionar(@RequestBody @Valid CidadeInput cidadeInput) {
 		try {
-			Cidade cidade = cidadeMapper.map(cidadeInput);
+			Cidade cidade = cidadeMapper.toDomain(cidadeInput);
 			cidade = cadastroCidade.salvar(cidade);
-			CidadeModel cidadeModel = cidadeMapper.map(cidade);
+			CidadeModel cidadeModel = cidadeMapper.toModel(cidade);
 
 			ResourceUriHelper.addUriToResponseHeaader(cidadeModel.getId());
 
@@ -63,7 +63,7 @@ public class CidadeController implements CidadeControllerOpenApi {
 		try {
 			Cidade cidadeAtual = cadastroCidade.buscar(cidadeId);
 			cidadeMapper.copyDtoToDomain(cidadeInput, cidadeAtual);
-			return cidadeMapper.map(cadastroCidade.salvar(cidadeAtual));
+			return cidadeMapper.toModel(cadastroCidade.salvar(cidadeAtual));
 		} catch (EstadoNaoEncontradoException e) {
 			throw new NegocioException(e.getMessage());
 		}

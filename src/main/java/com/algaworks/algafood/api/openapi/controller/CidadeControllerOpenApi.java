@@ -10,8 +10,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-
-import java.util.List;
+import org.springframework.hateoas.CollectionModel;
 
 @Tag(name = "Cidades", description = "Gerencia cidades")
 public interface CidadeControllerOpenApi {
@@ -21,7 +20,7 @@ public interface CidadeControllerOpenApi {
             @ApiResponse(description = "Sucesso", responseCode = "200"),
             @ApiResponse(description = "Requisição inválida (erro do cliente)", responseCode = "400", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiError.class)))
     })
-    List<CidadeModel> listar();
+    CollectionModel<CidadeModel> listar();
 
     @Operation(summary = "Buscar cidade por id")
     @ApiResponses(value = {
