@@ -7,14 +7,14 @@ import com.algaworks.algafood.domain.filter.PedidoFilter;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.PagedModel;
 
 @Tag(name = "Pedido")
 public interface PedidoControllerOpenApi {
 
     @PageableAsQueryParam
-    Page<PedidoResumoModel> pesquisar(PedidoFilter filtro, @Parameter(hidden = true) Pageable pageable);
+    PagedModel<PedidoResumoModel> pesquisar(PedidoFilter filtro, @Parameter(hidden = true) Pageable pageable);
 
     PedidoModel buscar(String codigoPedido);
 

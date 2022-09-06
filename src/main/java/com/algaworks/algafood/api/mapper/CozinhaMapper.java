@@ -1,33 +1,43 @@
 package com.algaworks.algafood.api.mapper;
 
+import com.algaworks.algafood.api.controller.CozinhaController;
+import com.algaworks.algafood.api.controller.UsuarioController;
 import com.algaworks.algafood.api.dto.input.CozinhaInput;
 import com.algaworks.algafood.api.dto.model.CozinhaModel;
 import com.algaworks.algafood.domain.model.Cozinha;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.IanaLinkRelations;
+import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
-public class CozinhaMapper {
+public class CozinhaMapper extends RepresentationModelAssemblerSupport<Cozinha, CozinhaModel> {
 
     @Autowired
     private ModelMapper modelMapper;
 
-    public CozinhaModel map(Cozinha cozinha) {
-        return modelMapper.map(cozinha, CozinhaModel.class);
+    public CozinhaMapper() {
+        super(CozinhaController.class, CozinhaModel.class);
     }
 
-    public List<CozinhaModel> map(List<Cozinha> cozinhas) {
-        return cozinhas
-                .stream()
-                .map(this::map)
-                .collect(Collectors.toList());
+    @Override
+    public CozinhaModel toModel(Cozinha cozinha) {
+        CozinhaModel cozinhaModel = modelMapper.map(cozinha, CozinhaModel.class);
+
+        cozinhaModel.add(linkTo(methodOn(CozinhaController.class).buscar(cozinha.getId()))
+                .withSelfRel());
+
+        cozinhaModel.add(linkTo(CozinhaController.class)
+                .withRel(IanaLinkRelations.COLLECTION));
+
+        return cozinhaModel;
     }
 
-    public Cozinha map(CozinhaInput cozinhaInput) {
+    public Cozinha toDomain(CozinhaInput cozinhaInput) {
         return modelMapper.map(cozinhaInput, Cozinha.class);
     }
 

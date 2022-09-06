@@ -13,6 +13,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,25 +35,29 @@ public class CozinhaController {
 	@Autowired
 	private CozinhaMapper cozinhaMapper;
 
+	@Autowired
+	private PagedResourcesAssembler<Cozinha> pagedResourcesAssembler;
+
 	@GetMapping
 	@PageableAsQueryParam
-	public Page<CozinhaModel> listar(@Parameter(hidden = true) @PageableDefault(size = 5) Pageable pageable) {
+	public PagedModel<CozinhaModel> listar(@Parameter(hidden = true) @PageableDefault(size = 5) Pageable pageable) {
 		Page<Cozinha> cozinhasPage = cozinhaRepository.findAll(pageable);
-		List<CozinhaModel> cozinhasModel = cozinhaMapper.map(cozinhasPage.getContent());
-		return new PageImpl<>(cozinhasModel, pageable, cozinhasPage.getTotalElements());
+
+		return pagedResourcesAssembler
+				.toModel(cozinhasPage, cozinhaMapper);
 	}
 	
 	@GetMapping("/{cozinhaId}")
 	public CozinhaModel buscar(@PathVariable Long cozinhaId) {
-		return  cozinhaMapper.map(cadastroCozinha.buscar(cozinhaId));
+		return  cozinhaMapper.toModel(cadastroCozinha.buscar(cozinhaId));
 	}
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public CozinhaModel adicionar(@RequestBody @Valid CozinhaInput cozinhaInput) {
-		Cozinha cozinha = cozinhaMapper.map(cozinhaInput);
+		Cozinha cozinha = cozinhaMapper.toDomain(cozinhaInput);
 		cozinha = cadastroCozinha.salvar(cozinha);
-		return cozinhaMapper.map(cozinha);
+		return cozinhaMapper.toModel(cozinha);
 	}
 	
 	@PutMapping("/{cozinhaId}")
@@ -60,7 +67,7 @@ public class CozinhaController {
 		cozinhaMapper.copyDtoToDomain(cozinhaInput, cozinhaAtual);
 		cozinhaAtual = cadastroCozinha.salvar(cozinhaAtual);
 
-		return cozinhaMapper.map(cozinhaAtual);
+		return cozinhaMapper.toModel(cozinhaAtual);
 	}
 	
 	@DeleteMapping("/{cozinhaId}")
