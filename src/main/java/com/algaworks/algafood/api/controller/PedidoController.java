@@ -27,7 +27,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -54,9 +53,13 @@ public class PedidoController implements PedidoControllerOpenApi {
 
 	@GetMapping
 	public PagedModel<PedidoResumoModel> pesquisar(PedidoFilter filtro, Pageable pageable) {
-		pageable = traduzirPageable(pageable);
-		Page<Pedido> pedidosPage = pedidoRepository.findAll(PedidoSpecs.usandoFiltro(filtro), pageable);
-		return pagedResourcesAssembler.toModel(pedidosPage, pedidoResumoMapper);
+		Pageable pageableTraduzido = traduzirPageable(pageable);
+		Page<Pedido> pedidosPage = pedidoRepository
+				.findAll(PedidoSpecs.usandoFiltro(filtro), pageableTraduzido);
+
+		return pagedResourcesAssembler.toModel(
+				new PageImpl<>(pedidosPage.getContent(), pageable, pedidosPage.getTotalElements()),
+				pedidoResumoMapper);
 	}
 
 
@@ -88,7 +91,7 @@ public class PedidoController implements PedidoControllerOpenApi {
 				"codigo", "codigo",
 				"subtotal", "subtotal",
 				"cliente.id", "cliente.id",
-				"restaurante.nome", "restautante.nome",
+				"nomerestaurante", "restaurante.nome",
 				"valorTotal", "valorTotal");
 
 		return PageableTranslator.translate(apiPageable, mapeamento);

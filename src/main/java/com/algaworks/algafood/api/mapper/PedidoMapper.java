@@ -6,12 +6,9 @@ import com.algaworks.algafood.api.dto.model.PedidoModel;
 import com.algaworks.algafood.domain.model.Pedido;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.IanaLinkRelations;
+import org.springframework.hateoas.*;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -32,7 +29,17 @@ public class PedidoMapper extends RepresentationModelAssemblerSupport<Pedido, Pe
         pedidoModel.add(linkTo(methodOn(PedidoController.class).buscar(pedido.getCodigo()))
                 .withSelfRel());
 
-        pedidoModel.add(linkTo(PedidoController.class).withRel(IanaLinkRelations.COLLECTION));
+        TemplateVariables pageVariables = new TemplateVariables(
+                new TemplateVariable("page", TemplateVariable.VariableType.REQUEST_PARAM),
+                new TemplateVariable("size", TemplateVariable.VariableType.REQUEST_PARAM),
+                new TemplateVariable("sort", TemplateVariable.VariableType.REQUEST_PARAM)
+        );
+
+        String pedidosUrl = linkTo(PedidoController.class).toUri().toString();
+
+        pedidoModel.add(new Link(
+                UriTemplate.of(pedidosUrl, pageVariables),
+                IanaLinkRelations.COLLECTION));
 
         pedidoModel.getRestaurante().add(linkTo(methodOn(RestauranteController.class)
                 .buscar(pedido.getRestaurante().getId())).withSelfRel());
