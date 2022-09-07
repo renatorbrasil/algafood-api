@@ -3,10 +3,10 @@ package com.algaworks.algafood.api.mapper;
 import com.algaworks.algafood.api.controller.*;
 import com.algaworks.algafood.api.dto.input.PedidoInput;
 import com.algaworks.algafood.api.dto.model.PedidoModel;
+import com.algaworks.algafood.api.helper.AlgaLinks;
 import com.algaworks.algafood.domain.model.Pedido;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.*;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
@@ -29,17 +29,9 @@ public class PedidoMapper extends RepresentationModelAssemblerSupport<Pedido, Pe
         pedidoModel.add(linkTo(methodOn(PedidoController.class).buscar(pedido.getCodigo()))
                 .withSelfRel());
 
-        TemplateVariables pageVariables = new TemplateVariables(
-                new TemplateVariable("page", TemplateVariable.VariableType.REQUEST_PARAM),
-                new TemplateVariable("size", TemplateVariable.VariableType.REQUEST_PARAM),
-                new TemplateVariable("sort", TemplateVariable.VariableType.REQUEST_PARAM)
-        );
+        pedidoModel.add(AlgaLinks.linkToPedidos());
 
-        String pedidosUrl = linkTo(PedidoController.class).toUri().toString();
-
-        pedidoModel.add(new Link(
-                UriTemplate.of(pedidosUrl, pageVariables),
-                IanaLinkRelations.COLLECTION));
+        adicionarLinkMudancaStatus(pedido, pedidoModel);
 
         pedidoModel.getRestaurante().add(linkTo(methodOn(RestauranteController.class)
                 .buscar(pedido.getRestaurante().getId())).withSelfRel());
@@ -47,6 +39,9 @@ public class PedidoMapper extends RepresentationModelAssemblerSupport<Pedido, Pe
         pedidoModel.getCliente().add(linkTo(methodOn(UsuarioController.class)
                 .buscar(pedido.getCliente().getId())).withSelfRel());
 
+        /*
+        * request = null não tem importância aqui, já que o 'methodIn' não chama o método realmente.
+        * */
         pedidoModel.getFormaPagamento().add(linkTo(methodOn(FormaPagamentoController.class)
                 .buscar(pedido.getFormaPagamento().getId(), null)).withSelfRel());
 
@@ -60,6 +55,25 @@ public class PedidoMapper extends RepresentationModelAssemblerSupport<Pedido, Pe
         });
 
         return pedidoModel;
+    }
+
+    private void adicionarLinkMudancaStatus(Pedido pedido, PedidoModel pedidoModel) {
+
+        if (pedido.podeSerConfirmado()) {
+            pedidoModel.add(linkTo(methodOn(FluxoPedidoController.class)
+                    .confirmar(pedido.getCodigo())).withRel("confirmar"));
+        }
+
+        if (pedido.podeSerCancelado()) {
+            pedidoModel.add(linkTo(methodOn(FluxoPedidoController.class)
+                    .cancelamento(pedido.getCodigo())).withRel("cancelar"));
+        }
+
+        if (pedido.podeSerEntregue()) {
+            pedidoModel.add(linkTo(methodOn(FluxoPedidoController.class)
+                    .entrega(pedido.getCodigo())).withRel("entregar"));
+        }
+
     }
 
     public Pedido toDomain(PedidoInput pedidoInput) {

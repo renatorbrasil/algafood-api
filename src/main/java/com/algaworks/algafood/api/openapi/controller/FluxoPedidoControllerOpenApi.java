@@ -1,14 +1,15 @@
 package com.algaworks.algafood.api.openapi.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.ResponseEntity;
 
 @Tag(name = "Pedido")
 public interface FluxoPedidoControllerOpenApi {
 
-    void confirmar(String codigoPedido);
+    ResponseEntity<Void> confirmar(String codigoPedido);
 
-    void entrega(String codigoPedido);
+    ResponseEntity<Void> entrega(String codigoPedido);
 
-    void cancelamento(String codigoPedido);
+    ResponseEntity<Void> cancelamento(String codigoPedido);
 
 }

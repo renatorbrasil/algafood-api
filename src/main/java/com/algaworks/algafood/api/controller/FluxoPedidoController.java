@@ -5,6 +5,7 @@ import com.algaworks.algafood.domain.service.FluxoPedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,19 +17,22 @@ public class FluxoPedidoController implements FluxoPedidoControllerOpenApi {
 
     @PutMapping("/confirmacao")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void confirmar(@PathVariable String codigoPedido) {
+    public ResponseEntity<Void> confirmar(@PathVariable String codigoPedido) {
         fluxoPedidoService.confirmar(codigoPedido);
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/entrega")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void entrega(@PathVariable String codigoPedido) {
+    public ResponseEntity<Void> entrega(@PathVariable String codigoPedido) {
         fluxoPedidoService.entrega(codigoPedido);
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/cancelamento")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void cancelamento(@PathVariable String codigoPedido) {
+    public ResponseEntity<Void> cancelamento(@PathVariable String codigoPedido) {
         fluxoPedidoService.cancelamento(codigoPedido);
+        return ResponseEntity.noContent().build();
     }
 }
