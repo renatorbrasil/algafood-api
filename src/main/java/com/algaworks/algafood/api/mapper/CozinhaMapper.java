@@ -1,7 +1,6 @@
 package com.algaworks.algafood.api.mapper;
 
 import com.algaworks.algafood.api.controller.CozinhaController;
-import com.algaworks.algafood.api.controller.UsuarioController;
 import com.algaworks.algafood.api.dto.input.CozinhaInput;
 import com.algaworks.algafood.api.dto.model.CozinhaModel;
 import com.algaworks.algafood.domain.model.Cozinha;
