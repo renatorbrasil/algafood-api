@@ -7,6 +7,7 @@ import com.algaworks.algafood.domain.exception.ValidacaoException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.PropertyBindingException;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
+@Slf4j
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Autowired
@@ -173,7 +175,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 + "Tente novamente e se o problema persistir, entre em contato "
                 + "com o administrador do sistema.";
 
-        ex.printStackTrace();
+        log.error(ex.getMessage(), ex);
 
         ApiError apiError = ApiError.fromApiErrorType(errorType, detailMessage);
         return ResponseEntity.status(errorType.getStatusCode()).body(apiError);
