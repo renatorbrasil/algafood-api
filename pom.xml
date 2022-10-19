@@ -120,12 +120,6 @@
       <artifactId>logback-ext-loggly</artifactId>
       <version>0.1.2</version>
     </dependency>
-    <dependency>
-      <groupId>com.nimbusds</groupId>
-      <artifactId>oauth2-oidc-sdk</artifactId>
-      <version>6.21.2</version>
-    </dependency>
-
   </dependencies>
 
   <build>
