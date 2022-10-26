@@ -8,7 +8,7 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SecurityUtils {
+public class AlgaSecurity {
 
     @Autowired
     private RestauranteRepository restauranteRepository;

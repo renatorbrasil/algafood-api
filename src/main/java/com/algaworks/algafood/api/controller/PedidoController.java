@@ -7,7 +7,8 @@ import com.algaworks.algafood.api.mapper.PedidoMapper;
 import com.algaworks.algafood.api.mapper.PedidoResumoMapper;
 import com.algaworks.algafood.api.openapi.controller.PedidoControllerOpenApi;
 import com.algaworks.algafood.core.data.PageableTranslator;
-import com.algaworks.algafood.core.security.SecurityUtils;
+import com.algaworks.algafood.core.security.CheckSecurity;
+import com.algaworks.algafood.core.security.AlgaSecurity;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.filter.PedidoFilter;
@@ -53,7 +54,7 @@ public class PedidoController implements PedidoControllerOpenApi {
 	private PagedResourcesAssembler<Pedido> pagedResourcesAssembler;
 
 	@Autowired
-	private SecurityUtils securityUtils;
+	private AlgaSecurity algaSecurity;
 
 	@GetMapping
 	public PagedModel<PedidoResumoModel> pesquisar(PedidoFilter filtro, Pageable pageable) {
@@ -67,6 +68,7 @@ public class PedidoController implements PedidoControllerOpenApi {
 	}
 
 
+	@CheckSecurity.Pedidos.PodeBuscar
 	@GetMapping("/{codigoPedido}")
 	public PedidoModel buscar(@PathVariable String codigoPedido) {
 		Pedido pedido = cadastroPedido.buscar(codigoPedido);
@@ -80,7 +82,7 @@ public class PedidoController implements PedidoControllerOpenApi {
 			Pedido novoPedido = pedidoMapper.toDomain(pedidoInput);
 
 			novoPedido.setCliente(new Usuario());
-			novoPedido.getCliente().setId(securityUtils.getUsuarioId());
+			novoPedido.getCliente().setId(algaSecurity.getUsuarioId());
 
 			novoPedido = emissaoPedido.emitir(novoPedido);
 			return pedidoMapper.toModel(novoPedido);
