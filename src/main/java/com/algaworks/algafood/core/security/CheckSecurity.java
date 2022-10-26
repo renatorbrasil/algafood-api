@@ -10,15 +10,26 @@ import java.lang.annotation.Target;
 public @interface CheckSecurity {
 
     @interface Cozinhas {
-
-        @PreAuthorize("isAuthenticated()")
-        @Retention(RetentionPolicy.RUNTIME)
-        @Target(ElementType.METHOD)
-        @interface PodeConsultar { }
-
-        @PreAuthorize("hasAuthority('EDITAR_COZINHAS')")
+        @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('EDITAR_COZINHAS')")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
         @interface PodeEditar { }
+
+        @PreAuthorize("hasAuthority('SCOPE_READ') and isAuthenticated()")
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target(ElementType.METHOD)
+        @interface PodeConsultar { }
+    }
+
+    @interface Restaurantes {
+        @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('EDITAR_RESTAURANTES')")
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target(ElementType.METHOD)
+        @interface PodeEditar { }
+
+        @PreAuthorize("hasAuthority('SCOPE_READ') and isAuthenticated()")
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target(ElementType.METHOD)
+        @interface PodeConsultar { }
     }
 }

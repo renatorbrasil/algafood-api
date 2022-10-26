@@ -2,6 +2,7 @@ package com.algaworks.algafood.api.controller;
 
 import com.algaworks.algafood.api.dto.model.FormaPagamentoModel;
 import com.algaworks.algafood.api.mapper.FormaPagamentoMapper;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.model.FormaPagamento;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.service.CadastroRestauranteService;
@@ -22,6 +23,7 @@ public class RestauranteFormaPagamentoController {
 	@Autowired
 	private FormaPagamentoMapper formaPagamentoMapper;
 
+	@CheckSecurity.Restaurantes.PodeConsultar
 	@GetMapping
 	public List<FormaPagamentoModel> listar(@PathVariable Long restauranteId) {
 		Restaurante restaurante = cadastroRestaurante.buscar(restauranteId);
@@ -29,6 +31,7 @@ public class RestauranteFormaPagamentoController {
 		return formaPagamentoMapper.map(formaPagamentos);
 	}
 
+	@CheckSecurity.Restaurantes.PodeEditar
 	@DeleteMapping("/{formaPagamentoId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void desassociar(
@@ -37,6 +40,7 @@ public class RestauranteFormaPagamentoController {
 		cadastroRestaurante.desassociarFormaPagamento(restauranteId, formaPagamentoId);
 	}
 
+	@CheckSecurity.Restaurantes.PodeEditar
 	@PutMapping("/{formaPagamentoId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void associar(

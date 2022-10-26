@@ -3,6 +3,7 @@ package com.algaworks.algafood.api.controller;
 import com.algaworks.algafood.api.dto.model.UsuarioModel;
 import com.algaworks.algafood.api.mapper.UsuarioMapper;
 import com.algaworks.algafood.api.openapi.controller.RestauranteResponsavelControllerOpenApi;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.model.Usuario;
 import com.algaworks.algafood.domain.service.CadastroRestauranteService;
@@ -26,6 +27,7 @@ public class RestauranteResponsavelController implements RestauranteResponsavelC
 	@Autowired
 	private UsuarioMapper usuarioMapper;
 
+	@CheckSecurity.Restaurantes.PodeConsultar
 	@GetMapping
 	public CollectionModel<UsuarioModel> listar(@PathVariable Long restauranteId) {
 		Restaurante restaurante = cadastroRestaurante.buscar(restauranteId);
@@ -38,6 +40,7 @@ public class RestauranteResponsavelController implements RestauranteResponsavelC
 						.withSelfRel());
 	}
 
+	@CheckSecurity.Restaurantes.PodeEditar
 	@DeleteMapping("/{usuarioId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void desassociar(
@@ -46,6 +49,7 @@ public class RestauranteResponsavelController implements RestauranteResponsavelC
 		cadastroRestaurante.desassociarResponsavel(restauranteId, usuarioId);
 	}
 
+	@CheckSecurity.Restaurantes.PodeEditar
 	@PutMapping("/{usuarioId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void associar(

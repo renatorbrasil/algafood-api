@@ -3,6 +3,7 @@ package com.algaworks.algafood.api.controller;
 import com.algaworks.algafood.api.dto.input.ProdutoInput;
 import com.algaworks.algafood.api.dto.model.ProdutoModel;
 import com.algaworks.algafood.api.mapper.ProdutoMapper;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.model.Produto;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.ProdutoRepository;
@@ -31,6 +32,7 @@ public class RestauranteProdutoController {
 	@Autowired
 	private ProdutoMapper produtoMapper;
 
+	@CheckSecurity.Restaurantes.PodeConsultar
 	@GetMapping
 	public List<ProdutoModel> listar(
 			@PathVariable Long restauranteId,
@@ -43,12 +45,14 @@ public class RestauranteProdutoController {
 		return produtoMapper.map(produtos);
 	}
 
+	@CheckSecurity.Restaurantes.PodeConsultar
 	@GetMapping("/{produtoId}")
 	public ProdutoModel buscar(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
 		Produto produto = cadastroProduto.buscar(restauranteId, produtoId);
 		return produtoMapper.map(produto);
 	}
 
+	@CheckSecurity.Restaurantes.PodeEditar
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public ProdutoModel adicionar(@PathVariable Long restauranteId,
@@ -61,6 +65,7 @@ public class RestauranteProdutoController {
 		return produtoMapper.map(produto);
 	}
 
+	@CheckSecurity.Restaurantes.PodeEditar
 	@PutMapping("/{produtoId}")
 	public ProdutoModel atualizar(@PathVariable Long restauranteId,
 								  @PathVariable Long produtoId,
