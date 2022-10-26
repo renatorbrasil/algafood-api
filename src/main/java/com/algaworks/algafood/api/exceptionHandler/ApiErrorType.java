@@ -12,7 +12,8 @@ public enum ApiErrorType {
     ERRO_NEGOCIO("/erro-negocio", "Violação de regra de negócio", HttpStatus.BAD_REQUEST),
     ERRO_DE_SISTEMA("/erro-de-sistema", "Erro de sistema", HttpStatus.INTERNAL_SERVER_ERROR),
     PARAMETRO_INVALIDO("/parametro-invalido", "Parâmetro inválido", HttpStatus.BAD_REQUEST),
-    DADOS_INVALIDOS("/dados-invalidos", "Dados inválidos", HttpStatus.BAD_REQUEST);
+    DADOS_INVALIDOS("/dados-invalidos", "Dados inválidos", HttpStatus.BAD_REQUEST),
+    ACESSO_NEGADO("/acesso-negado", "Acesso negado", HttpStatus.FORBIDDEN);
 
     private final String title;
     private final String path;
