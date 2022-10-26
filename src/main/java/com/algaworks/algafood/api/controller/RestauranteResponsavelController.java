@@ -40,7 +40,7 @@ public class RestauranteResponsavelController implements RestauranteResponsavelC
 						.withSelfRel());
 	}
 
-	@CheckSecurity.Restaurantes.PodeEditar
+	@CheckSecurity.Restaurantes.PodeGerenciarCadastro
 	@DeleteMapping("/{usuarioId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void desassociar(
@@ -49,7 +49,7 @@ public class RestauranteResponsavelController implements RestauranteResponsavelC
 		cadastroRestaurante.desassociarResponsavel(restauranteId, usuarioId);
 	}
 
-	@CheckSecurity.Restaurantes.PodeEditar
+	@CheckSecurity.Restaurantes.PodeGerenciarCadastro
 	@PutMapping("/{usuarioId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void associar(

@@ -31,7 +31,7 @@ public class RestauranteFormaPagamentoController {
 		return formaPagamentoMapper.map(formaPagamentos);
 	}
 
-	@CheckSecurity.Restaurantes.PodeEditar
+	@CheckSecurity.Restaurantes.PodeGerenciarFuncionamento
 	@DeleteMapping("/{formaPagamentoId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void desassociar(
@@ -40,7 +40,7 @@ public class RestauranteFormaPagamentoController {
 		cadastroRestaurante.desassociarFormaPagamento(restauranteId, formaPagamentoId);
 	}
 
-	@CheckSecurity.Restaurantes.PodeEditar
+	@CheckSecurity.Restaurantes.PodeGerenciarFuncionamento
 	@PutMapping("/{formaPagamentoId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void associar(

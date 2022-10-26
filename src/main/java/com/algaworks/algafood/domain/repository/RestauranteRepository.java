@@ -22,4 +22,9 @@ public interface RestauranteRepository extends
     @Query("from Restaurante r join fetch r.cozinha")
     List<Restaurante> findAll();
 
+    /*
+     * Named query: Restaurante.existsResponsavel
+     * */
+    boolean existsResponsavel(Long restauranteId, Long usuarioId);
+
 }
