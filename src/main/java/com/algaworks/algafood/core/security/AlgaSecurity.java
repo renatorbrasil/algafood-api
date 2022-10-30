@@ -21,6 +21,42 @@ public class AlgaSecurity {
         return SecurityContextHolder.getContext().getAuthentication();
     }
 
+    public boolean isAutenticado() {
+        return getAuthentication().isAuthenticated();
+    }
+
+    public boolean temEscopoEscrita() {
+        return hasAuthority("SCOPE_WRITE");
+    }
+
+    public boolean temEscopoLeitura() {
+        return hasAuthority("SCOPE_READ");
+    }
+
+    public boolean podePesquisarPedidos() {
+        return isAutenticado() && temEscopoLeitura();
+    }
+
+    public boolean podeConsultarFormasPagamento() {
+        return isAutenticado() && temEscopoLeitura();
+    }
+
+    public boolean podeConsultarCidades() {
+        return isAutenticado() && temEscopoLeitura();
+    }
+
+    public boolean podeConsultarEstados() {
+        return isAutenticado() && temEscopoLeitura();
+    }
+
+    public boolean podeConsultarCozinhas() {
+        return isAutenticado() && temEscopoLeitura();
+    }
+
+    public boolean podeConsultarEstatisticas() {
+        return temEscopoLeitura() && hasAuthority("GERAR_RELATORIOS");
+    }
+
     public Long getUsuarioId() {
         Jwt jwt = (Jwt) getAuthentication().getPrincipal();
         return jwt.getClaim("usuario_id");
