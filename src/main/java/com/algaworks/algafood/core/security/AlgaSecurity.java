@@ -38,8 +38,18 @@ public class AlgaSecurity {
     }
 
     public boolean usuarioAutenticadoIgual(Long usuarioId) {
-        return getUsuarioId()!= null && usuarioId != null
+        return getUsuarioId() != null && usuarioId != null
                 && getUsuarioId().equals(usuarioId);
+    }
 
+    public boolean hasAuthority(String authorityName) {
+        return getAuthentication().getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority()
+                        .equalsIgnoreCase(authorityName));
+    }
+
+    public boolean podeGerenciarPedidos(String codigoPedido) {
+        return hasAuthority("SCOPE_WRITE") && (hasAuthority("GERENCIAR_PEDIDOS")
+                || gerenciaRestauranteDoPedido(codigoPedido));
     }
 }
