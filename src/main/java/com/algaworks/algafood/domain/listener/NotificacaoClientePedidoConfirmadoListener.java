@@ -22,7 +22,7 @@ public class NotificacaoClientePedidoConfirmadoListener {
     public void aoConfirmarPedido(PedidoConfirmadoEvent event) {
         Pedido pedido = event.getPedido();
 
-        var corpo = templateBuilder.processarTemplate("pedido-confirmado.html", pedido);
+        var corpo = templateBuilder.processarTemplate("emails/pedido-confirmado.html", pedido);
 
         var mensagem = EmailService.Mensagem.builder()
                 .assunto(pedido.getRestaurante().getNome() + " - Pedido confirmdo")

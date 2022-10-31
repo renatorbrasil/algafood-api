@@ -22,7 +22,7 @@ public class NotificacaoClientePedidoCanceladoListener {
     public void aoCancelarPedido(PedidoCanceladoEvent event) {
         Pedido pedido = event.getPedido();
 
-        var corpo = templateBuilder.processarTemplate("pedido-cancelado.html", pedido);
+        var corpo = templateBuilder.processarTemplate("emails/pedido-cancelado.html", pedido);
 
         var mensagem = EmailService.Mensagem.builder()
                 .assunto(pedido.getRestaurante().getNome() + " - Pedido cancelado")

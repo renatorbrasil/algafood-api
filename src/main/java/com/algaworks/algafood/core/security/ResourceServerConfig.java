@@ -20,12 +20,15 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-            .formLogin().and()
+            .formLogin().loginPage("/login")
+        .and()
             .authorizeRequests().antMatchers("/oauth/**").authenticated()
-            .and().csrf().disable().cors()
-            .and().oauth2ResourceServer()
-                .jwt()
-                .jwtAuthenticationConverter(jwtAuthenticationConverter());
+        .and()
+            .csrf().disable().cors()
+        .and()
+            .oauth2ResourceServer()
+            .jwt()
+            .jwtAuthenticationConverter(jwtAuthenticationConverter());
     }
 
     private JwtAuthenticationConverter jwtAuthenticationConverter() {

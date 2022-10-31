@@ -1,5 +1,9 @@
 package com.algaworks.algafood.core.security.authorizationServer;
 
+import com.nimbusds.jose.JWSAlgorithm;
+import com.nimbusds.jose.jwk.JWKSet;
+import com.nimbusds.jose.jwk.KeyUse;
+import com.nimbusds.jose.jwk.RSAKey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +24,8 @@ import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenCo
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
 
 import javax.sql.DataSource;
+import java.security.KeyPair;
+import java.security.interfaces.RSAPublicKey;
 import java.util.Arrays;
 
 @Configuration
@@ -69,18 +75,29 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     }
 
     @Bean
+    public JWKSet jwkSet() {
+        var rsaKey = new RSAKey.Builder((RSAPublicKey) keyPair().getPublic())
+                .keyUse(KeyUse.SIGNATURE)
+                .algorithm(JWSAlgorithm.RS256)
+                .keyID("algafood-key-id")
+                .build();
+
+        return new JWKSet(rsaKey);
+    }
+
+    @Bean
     public JwtAccessTokenConverter jwtAccessTokenConverter() {
         var tokenConverter = new JwtAccessTokenConverter();
+        tokenConverter.setKeyPair(keyPair());
+        return tokenConverter;
+    }
 
+    private KeyPair keyPair() {
         var keyStorePass = jwtKeyStoreProperties.getPassword();
         var keypairAlias = jwtKeyStoreProperties.getKeypairAlias();
 
         var keyStoreKeyFactory = new KeyStoreKeyFactory(jwtKeyStoreProperties.getJksLocation(), keyStorePass.toCharArray());
-        var keyPair = keyStoreKeyFactory.getKeyPair(keypairAlias);
-
-        tokenConverter.setKeyPair(keyPair);
-
-        return tokenConverter;
+        return keyStoreKeyFactory.getKeyPair(keypairAlias);
     }
 
     @Override
