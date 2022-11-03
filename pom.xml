@@ -18,7 +18,7 @@
   <properties>
     <java.version>11</java.version>
     <modelmapper.version>2.3.0</modelmapper.version>
-    <spring-security-oauth2.version>2.3.7.RELEASE</spring-security-oauth2.version>
+    <spring-security-oauth2.version>2.3.8.RELEASE</spring-security-oauth2.version>
     <dockerfile-maven-version>1.4.13</dockerfile-maven-version>
   </properties>
 
@@ -68,6 +68,14 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-redis</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.session</groupId>
+      <artifactId>spring-session-data-redis</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework.security</groupId>
