@@ -4,8 +4,15 @@ import com.algaworks.algafood.api.exceptionHandler.ApiError;
 import com.algaworks.algafood.api.openapi.model.PageOpenApiModel;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverters;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.OAuthFlow;
+import io.swagger.v3.oas.annotations.security.OAuthFlows;
+import io.swagger.v3.oas.annotations.security.OAuthScope;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
+import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
@@ -15,12 +22,23 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.util.CollectionUtils;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
+@SecurityScheme(name = "security_auth",
+        type = SecuritySchemeType.OAUTH2,
+        flows = @OAuthFlows(authorizationCode = @OAuthFlow(
+                authorizationUrl = "${springdoc.oAuthFlow.authorizationUrl}",
+                tokenUrl = "${springdoc.oAuthFlow.tokenUrl}",
+                scopes = {
+                        @OAuthScope(name = "READ", description = "read scope"),
+                        @OAuthScope(name = "WRITE", description = "write scope")
+                }
+        )))
 public class OpenApiConfig {
 
     static {

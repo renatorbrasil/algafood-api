@@ -9,24 +9,26 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.hateoas.CollectionModel;
 
 @Tag(name = "Cidades", description = "Gerencia cidades")
+@SecurityRequirement(name = "security_auth")
 public interface CidadeControllerOpenApi {
 
     @Operation(summary = "Listar todas as cidades")
     @ApiResponses(value = {
             @ApiResponse(description = "Sucesso", responseCode = "200"),
-            @ApiResponse(description = "Requisição inválida (erro do cliente)", responseCode = "400", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiError.class)))
+            @ApiResponse(description = "Requisição inválida (erro do cliente)", responseCode = "400", content = @Content(mediaType = "application/json", schema = @Schema(ref = "Problema")))
     })
     CollectionModel<CidadeModel> listar();
 
     @Operation(summary = "Buscar cidade por id")
     @ApiResponses(value = {
             @ApiResponse(description = "Sucesso", responseCode = "200"),
-            @ApiResponse(description = "Cidade não encontrada", responseCode = "404", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiError.class))),
-            @ApiResponse(description = "Id da cidade inválido", responseCode = "400", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiError.class)))
+            @ApiResponse(description = "Cidade não encontrada", responseCode = "404", content = @Content(mediaType = "application/json", schema = @Schema(ref = "Problema"))),
+            @ApiResponse(description = "Id da cidade inválido", responseCode = "400", content = @Content(mediaType = "application/json", schema = @Schema(ref = "Problema")))
     })
     CidadeModel buscar(@Parameter(description = "ID de uma cidade") Long cidadeId);
 
